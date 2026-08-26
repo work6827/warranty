@@ -75,10 +75,21 @@
   --ring: #1c1a17;
   --radius: 0.65rem;
 
-  /* Brand accent — a warm bronze, used sparingly for the mark, links and key emphasis */
-  --brand: #9c6a34;
-  --brand-foreground: #fdfaf6;
-  --brand-soft: #f5ecdf;
+  /* Brand accent — one confident, saturated color (Square/Apple pattern:
+     the whole system is black-and-white, this is the single deliberate
+     pop, reserved for primary actions, the mark, and key emphasis) */
+  --brand: #d8480f;
+  --brand-foreground: #fffaf6;
+  --brand-soft: #fde7d7;
+}
+
+/* Root-level font scale for the accessibility font-size control (Settings
+   menu). Multiplies rem-based sizing app-wide since Tailwind is rem-driven. */
+html[data-font-size='sm'] {
+  font-size: 15px;
+}
+html[data-font-size='lg'] {
+  font-size: 18px;
 }
 
 .dark {

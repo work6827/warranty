@@ -30,7 +30,7 @@ export function QRCodeDisplay({ url }: { url: string }) {
           />
           <a
             href={qrDataUrl}
-            download={`project-h-qr-${Date.now()}.png`}
+            download="project-h-passport-qr.png"
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <Download className="size-3.5" />

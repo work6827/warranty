@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useProjectFormStore, ProjectFormPhoto } from '@/lib/store/project-form-store'
+import { useProjectFormStore } from '@/lib/store/project-form-store'
 import { createClient } from '@/lib/supabase/client'
 import { Upload } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -18,18 +18,11 @@ export function InstallationStep() {
   const [installers, setInstallers] = useState<any[]>([])
 
   useEffect(() => {
-    loadInstallers()
-  }, [])
-
-  const loadInstallers = async () => {
-    const { data } = await supabase
-      .from('installers')
-      .select('*')
-      .eq('is_active', true)
-      .order('name')
-
-    setInstallers(data || [])
-  }
+    let active = true
+    void supabase.from('installers').select('*').eq('is_active', true).order('name')
+      .then(({ data }) => { if (active) setInstallers(data || []) })
+    return () => { active = false }
+  }, [supabase])
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -66,7 +59,7 @@ export function InstallationStep() {
   }
 
   const handleUpdateInstaller = (itemId: string, installerId: string) => {
-    updateItem(itemId, { installer_id: installerId || undefined })
+    updateItem(itemId, { installer_id: installerId === 'none' ? undefined : installerId })
   }
 
   const handleUpdateInstallationDate = (itemId: string, date: string) => {
@@ -124,7 +117,13 @@ export function InstallationStep() {
                         onValueChange={(value) => handleUpdateInstaller(item.id, value ?? 'none')}
                       >
                         <SelectTrigger className="h-10 w-full">
-                          <SelectValue placeholder="Select installer" />
+                          <SelectValue placeholder="Select installer">
+                            {(value: string) =>
+                              value === 'none'
+                                ? 'No installer'
+                                : installers.find((i) => i.id === value)?.name
+                            }
+                          </SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="none">No installer</SelectItem>
@@ -185,7 +184,11 @@ export function InstallationStep() {
                       }
                     >
                       <SelectTrigger className="h-8 text-xs">
-                        <SelectValue placeholder="Photo type" />
+                        <SelectValue placeholder="Photo type">
+                          {(value: string) =>
+                            ({ none: 'No type', before: 'Before', during: 'During', after: 'After' })[value]
+                          }
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="none">No type</SelectItem>
@@ -220,7 +223,7 @@ export function InstallationStep() {
           )}
 
           <p className="text-xs text-muted-foreground">
-            Photos marked as "Show to customer" will appear on the public passport. Max file size:
+            Photos marked as &quot;Show to customer&quot; will appear on the public passport. Max file size:
             5MB per photo.
           </p>
         </div>

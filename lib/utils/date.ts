@@ -1,4 +1,4 @@
-import { format, addMonths, differenceInDays, isPast, isFuture } from 'date-fns'
+import { format, addMonths, differenceInDays, isPast } from 'date-fns'
 import { id as localeId } from 'date-fns/locale'
 
 /**

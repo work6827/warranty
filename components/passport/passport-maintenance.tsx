@@ -1,8 +1,13 @@
-import { Lightbulb } from 'lucide-react'
+'use client'
+
+import { Check, Lightbulb } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { useLocale } from '@/lib/i18n/locale-context'
 
 export function PassportMaintenance({ items }: { items: any[] }) {
+  const { t } = useLocale()
+
   // Filter items that have maintenance instructions
   const itemsWithMaintenance = items.filter(
     (item: any) => item.custom_maintenance || item.product.maintenance_instructions
@@ -13,7 +18,7 @@ export function PassportMaintenance({ items }: { items: any[] }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Take Care of Your Halla Products</CardTitle>
+        <CardTitle className="text-base">{t('passport.maintenance.title')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {itemsWithMaintenance.map((item: any) => {
@@ -27,8 +32,8 @@ export function PassportMaintenance({ items }: { items: any[] }) {
                   {item.product.category.name}
                 </Badge>
               </div>
-              <div className="rounded-lg bg-secondary p-3 text-sm whitespace-pre-line text-muted-foreground">
-                {maintenance}
+              <div className="rounded-xl bg-secondary p-4 text-sm text-muted-foreground">
+                {String(maintenance).split(/\n+/).filter(Boolean).map((line) => <p key={line} className="flex gap-2 py-1"><Check className="mt-0.5 size-3.5 shrink-0 text-brand" /><span>{line.replace(/^[-•]\s*/, '')}</span></p>)}
               </div>
             </div>
           )
@@ -37,8 +42,8 @@ export function PassportMaintenance({ items }: { items: any[] }) {
         <div className="flex items-start gap-2.5 rounded-lg bg-brand-soft p-3 text-sm text-brand">
           <Lightbulb className="mt-0.5 size-4 shrink-0" />
           <p>
-            <span className="font-medium">Regular maintenance matters.</span> It extends the life
-            of your products and keeps your warranty valid.
+            <span className="font-medium">{t('passport.maintenance.tip')}</span>{' '}
+            {t('passport.maintenance.tipBody')}
           </p>
         </div>
       </CardContent>

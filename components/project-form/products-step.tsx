@@ -1,8 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useProjectFormStore, ProjectFormItem } from '@/lib/store/project-form-store'
-import { createClient } from '@/lib/supabase/client'
+import { useState } from 'react'
+import { useProjectFormStore } from '@/lib/store/project-form-store'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -10,16 +9,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AddProductDialog } from '@/components/product-form/add-product-dialog'
 
 export function ProductsStep() {
-  const supabase = createClient()
   const { areas, removeItem, setStep } = useProjectFormStore()
-  const [selectedArea, setSelectedArea] = useState<string>(areas[0]?.id || '')
+  const [selectedAreaId, setSelectedAreaId] = useState<string>(areas[0]?.id || '')
   const [showAddDialog, setShowAddDialog] = useState(false)
-
-  useEffect(() => {
-    if (areas.length > 0 && !selectedArea) {
-      setSelectedArea(areas[0].id)
-    }
-  }, [areas])
+  const selectedArea = areas.some((area) => area.id === selectedAreaId)
+    ? selectedAreaId
+    : areas[0]?.id || ''
 
   const handleContinue = () => {
     const totalItems = areas.reduce((sum, area) => sum + area.items.length, 0)
@@ -51,7 +46,7 @@ export function ProductsStep() {
             No areas available. Please go back and add areas first.
           </div>
         ) : (
-          <Tabs value={selectedArea} onValueChange={setSelectedArea}>
+          <Tabs value={selectedArea} onValueChange={setSelectedAreaId}>
             <TabsList className="w-full justify-start overflow-x-auto">
               {areas.map((area) => (
                 <TabsTrigger key={area.id} value={area.id} className="relative">

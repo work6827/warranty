@@ -12,7 +12,7 @@ import { WarrantyStep } from '@/components/project-form/warranty-step'
 import { ReviewStep } from '@/components/project-form/review-step'
 
 export default function NewProjectPage() {
-  const { currentStep, reset } = useProjectFormStore()
+  const { currentStep } = useProjectFormStore()
 
   // Reset form when component mounts
   useEffect(() => {

@@ -61,6 +61,9 @@ export function ReviewStep() {
     setError('')
     setUploadProgress('Creating project...')
 
+    let createdProjectId: string | null = null
+    const uploadedPaths: string[] = []
+
     try {
       // Generate project ID
       const { data: projectIdData, error: idError } = await supabase.rpc('generate_project_id')
@@ -90,6 +93,7 @@ export function ReviewStep() {
         .single()
 
       if (projectError) throw projectError
+      createdProjectId = project.id
 
       // Create areas and items
       setUploadProgress('Adding products...')
@@ -153,8 +157,9 @@ export function ReviewStep() {
           setUploadProgress(`Uploading photos (${i + 1}/${photos.length})...`)
 
           const { path, url } = await uploadPhoto(photo, project.id)
+          uploadedPaths.push(path)
 
-          await supabase.from('project_photos').insert({
+          const { error: photoError } = await supabase.from('project_photos').insert({
             project_id: project.id,
             file_path: path,
             file_url: url,
@@ -162,6 +167,7 @@ export function ReviewStep() {
             is_customer_visible: photo.is_customer_visible,
             caption: photo.caption,
           })
+          if (photoError) throw photoError
         }
       }
 
@@ -171,6 +177,19 @@ export function ReviewStep() {
       router.push(`/admin/projects/${project.id}/published`)
     } catch (err: any) {
       console.error('Error creating project:', err)
+      if (uploadedPaths.length > 0) {
+        const { error: storageCleanupError } = await supabase.storage
+          .from('project-photos')
+          .remove(uploadedPaths)
+        if (storageCleanupError) console.error('Error cleaning up uploaded photos:', storageCleanupError)
+      }
+      if (createdProjectId) {
+        const { error: projectCleanupError } = await supabase
+          .from('projects')
+          .delete()
+          .eq('id', createdProjectId)
+        if (projectCleanupError) console.error('Error cleaning up partial project:', projectCleanupError)
+      }
       setError(err.message || 'Failed to create project')
     } finally {
       setLoading(false)

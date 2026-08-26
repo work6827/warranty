@@ -1,15 +1,21 @@
+'use client'
+
+import { ChevronDown, Package } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { formatDate } from '@/lib/utils/date'
+import { useLocale } from '@/lib/i18n/locale-context'
 
 export function PassportProducts({ areas }: { areas: any[] }) {
+  const { t } = useLocale()
+
   if (areas.length === 0) return null
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Your Halla Project</CardTitle>
+        <CardTitle className="text-base">{t('passport.products.title')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-7">
         {areas.map((area, areaIndex) => (
@@ -23,8 +29,10 @@ export function PassportProducts({ areas }: { areas: any[] }) {
 
               <div className="space-y-3">
                 {area.items.map((item: any) => (
-                  <div key={item.id} className="rounded-xl border border-border p-4">
-                    <div className="flex items-start justify-between gap-2">
+                  <details key={item.id} className="group rounded-2xl border border-border bg-card p-4 transition-all open:shadow-sm" open={areaIndex === 0}>
+                    <summary className="flex cursor-pointer list-none items-start justify-between gap-3 [&::-webkit-details-marker]:hidden">
+                      <div className="flex min-w-0 gap-3">
+                        <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft"><Package className="size-4.5 text-brand" /></div>
                       <div className="flex-1">
                         <h4 className="font-medium text-foreground">{item.product.name}</h4>
                         <p className="text-sm text-muted-foreground">
@@ -35,7 +43,10 @@ export function PassportProducts({ areas }: { areas: any[] }) {
                       <Badge variant="outline" className="shrink-0">
                         {item.product.category.name}
                       </Badge>
-                    </div>
+                      </div>
+                      <ChevronDown className="mt-1 size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+                    </summary>
+                    <div className="pl-0 sm:pl-13">
 
                     {/* Specifications */}
                     {item.product.specifications &&
@@ -60,8 +71,16 @@ export function PassportProducts({ areas }: { areas: any[] }) {
                       <span>
                         <span className="font-medium text-foreground">{item.quantity}</span> {item.unit}
                       </span>
-                      {item.installation_date && <span>Installed {formatDate(item.installation_date)}</span>}
-                      {item.installer && <span>By {item.installer.name}</span>}
+                      {item.installation_date && (
+                        <span>
+                          {t('passport.products.quantity')} {formatDate(item.installation_date)}
+                        </span>
+                      )}
+                      {item.installer && (
+                        <span>
+                          {t('passport.products.by')} {item.installer.name}
+                        </span>
+                      )}
                     </div>
 
                     {/* Warranty Badge */}
@@ -72,11 +91,12 @@ export function PassportProducts({ areas }: { areas: any[] }) {
                           className="text-xs"
                         >
                           {item.warranty.status === 'active' && '✓ '}
-                          Warranty until {formatDate(item.warranty.expiration_date)}
+                          {t('passport.products.warrantyUntil')} {formatDate(item.warranty.expiration_date)}
                         </Badge>
                       </div>
                     )}
-                  </div>
+                    </div>
+                  </details>
                 ))}
               </div>
             </div>

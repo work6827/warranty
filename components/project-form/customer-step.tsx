@@ -30,12 +30,8 @@ export function CustomerStep() {
     customerData?.id || null
   )
 
-  // Load existing customers
   useEffect(() => {
-    loadCustomers()
-  }, [searchQuery])
-
-  const loadCustomers = async () => {
+    let active = true
     let query = supabase
       .from('customers')
       .select('*')
@@ -46,9 +42,9 @@ export function CustomerStep() {
       query = query.or(`name.ilike.%${searchQuery}%,phone.ilike.%${searchQuery}%`)
     }
 
-    const { data } = await query
-    setExistingCustomers(data || [])
-  }
+    void query.then(({ data }) => { if (active) setExistingCustomers(data || []) })
+    return () => { active = false }
+  }, [searchQuery, supabase])
 
   const handleCreateCustomer = async () => {
     if (!newCustomer.name || !newCustomer.phone) {

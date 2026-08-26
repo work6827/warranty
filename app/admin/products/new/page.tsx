@@ -2,13 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { ArrowLeft, Tag, Ruler, ShieldCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Alert } from '@/components/ui/alert'
 
 interface Category {
@@ -24,6 +26,28 @@ interface CategorySpec {
   data_type: string
   unit: string | null
   is_required: boolean
+}
+
+function SectionHeader({
+  icon: Icon,
+  title,
+  description,
+}: {
+  icon: typeof Tag
+  title: string
+  description: string
+}) {
+  return (
+    <CardHeader className="flex-row items-start gap-3 space-y-0">
+      <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary">
+        <Icon className="size-4.5 text-brand" />
+      </div>
+      <div>
+        <CardTitle className="text-base">{title}</CardTitle>
+        <CardDescription className="mt-0.5">{description}</CardDescription>
+      </div>
+    </CardHeader>
+  )
 }
 
 export default function NewProductPage() {
@@ -46,41 +70,23 @@ export default function NewProductPage() {
   const [maintenance, setMaintenance] = useState('')
 
   useEffect(() => {
-    loadCategories()
-  }, [])
+    let active = true
+    void supabase.from('categories').select('*').eq('is_active', true).order('sort_order')
+      .then(({ data }) => { if (active) setCategories(data || []) })
+    return () => { active = false }
+  }, [supabase])
 
   useEffect(() => {
-    if (categoryId) {
-      loadCategorySpecs(categoryId)
-    }
-  }, [categoryId])
-
-  const loadCategories = async () => {
-    const { data } = await supabase
-      .from('categories')
-      .select('*')
-      .eq('is_active', true)
-      .order('sort_order')
-
-    setCategories(data || [])
-  }
-
-  const loadCategorySpecs = async (catId: string) => {
-    const { data } = await supabase
-      .from('category_specifications')
-      .select('*')
-      .eq('category_id', catId)
-      .order('sort_order')
-
-    setSpecs(data || [])
-
-    // Reset specifications
-    const initialSpecs: Record<string, any> = {}
-    data?.forEach((spec) => {
-      initialSpecs[spec.slug] = ''
-    })
-    setSpecifications(initialSpecs)
-  }
+    if (!categoryId) return
+    let active = true
+    void supabase.from('category_specifications').select('*').eq('category_id', categoryId)
+      .order('sort_order').then(({ data }) => {
+        if (!active) return
+        setSpecs(data || [])
+        setSpecifications(Object.fromEntries((data || []).map((spec) => [spec.slug, ''])))
+      })
+    return () => { active = false }
+  }, [categoryId, supabase])
 
   const handleSpecChange = (slug: string, value: any) => {
     setSpecifications((prev) => ({
@@ -88,6 +94,8 @@ export default function NewProductPage() {
       [slug]: value,
     }))
   }
+
+  const selectedCategory = categories.find((c) => c.id === categoryId)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -107,7 +115,7 @@ export default function NewProductPage() {
         }
       }
 
-      const { data, error: insertError } = await supabase
+      const { error: insertError } = await supabase
         .from('products')
         .insert({
           category_id: categoryId,
@@ -133,17 +141,27 @@ export default function NewProductPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
+      <Link
+        href="/admin/products"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <ArrowLeft className="size-3.5" />
+        Products
+      </Link>
+
       <div className="mb-8">
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">Add New Product</h1>
         <p className="mt-1 text-sm text-muted-foreground">Add a product to the Halla Home catalog</p>
       </div>
 
-      <form onSubmit={handleSubmit}>
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="text-base">Basic Information</CardTitle>
-          </CardHeader>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <Card className="shadow-soft">
+          <SectionHeader
+            icon={Tag}
+            title="Basic Information"
+            description="What this product is and how it's identified in the catalog."
+          />
           <CardContent className="space-y-4">
             <div className="space-y-1.5">
               <Label htmlFor="category">
@@ -151,7 +169,9 @@ export default function NewProductPage() {
               </Label>
               <Select value={categoryId} onValueChange={(value) => setCategoryId(value ?? '')}>
                 <SelectTrigger id="category" className="h-10 w-full">
-                  <SelectValue placeholder="Select category" />
+                  <SelectValue placeholder="Select category">
+                    {(value: string) => categories.find((c) => c.id === value)?.name}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((cat) => (
@@ -218,10 +238,12 @@ export default function NewProductPage() {
         </Card>
 
         {categoryId && specs.length > 0 && (
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="text-base">Product Specifications</CardTitle>
-            </CardHeader>
+          <Card className="shadow-soft">
+            <SectionHeader
+              icon={Ruler}
+              title="Product Specifications"
+              description={`Fields specific to ${selectedCategory?.name ?? 'this category'}.`}
+            />
             <CardContent className="space-y-4">
               {specs.map((spec) => (
                 <div key={spec.id} className="space-y-1.5">
@@ -257,10 +279,12 @@ export default function NewProductPage() {
           </Card>
         )}
 
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="text-base">Warranty & Maintenance</CardTitle>
-          </CardHeader>
+        <Card className="shadow-soft">
+          <SectionHeader
+            icon={ShieldCheck}
+            title="Warranty & Maintenance"
+            description="Defaults applied when this product is added to a project — both can be overridden per install."
+          />
           <CardContent className="space-y-4">
             <div className="space-y-1.5">
               <Label htmlFor="warranty">Default Warranty Duration (months)</Label>
@@ -270,7 +294,7 @@ export default function NewProductPage() {
                 min="0"
                 value={warrantyMonths}
                 onChange={(e) => setWarrantyMonths(e.target.value)}
-                className="h-10"
+                className="h-10 max-w-32"
               />
               <p className="text-xs text-muted-foreground">Can be adjusted per project</p>
             </div>
@@ -289,13 +313,9 @@ export default function NewProductPage() {
           </CardContent>
         </Card>
 
-        {error && (
-          <Alert variant="destructive" className="mb-6">
-            {error}
-          </Alert>
-        )}
+        {error && <Alert variant="destructive">{error}</Alert>}
 
-        <div className="flex justify-between">
+        <div className="flex items-center justify-between border-t border-border pt-6">
           <Button type="button" variant="outline" onClick={() => router.back()} disabled={loading} className="h-10">
             Cancel
           </Button>

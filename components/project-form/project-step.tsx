@@ -63,7 +63,9 @@ export function ProjectStep() {
             </Label>
             <Select value={projectData.project_type} onValueChange={(value: any) => setProjectData({ project_type: value })}>
               <SelectTrigger id="project-type" className="h-10 w-full">
-                <SelectValue placeholder="Select project type" />
+                <SelectValue placeholder="Select project type">
+                  {(value: string) => projectTypes.find((t) => t.value === value)?.label}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {projectTypes.map((type) => (

@@ -51,43 +51,22 @@ export function AddProductDialog({
   const [customUnit, setCustomUnit] = useState<string>('')
   const [searchQuery, setSearchQuery] = useState<string>('')
 
-  // Load categories
   useEffect(() => {
-    loadCategories()
-  }, [])
+    let active = true
+    void supabase.from('categories').select('*').eq('is_active', true).order('sort_order')
+      .then(({ data }) => { if (active) setCategories(data || []) })
+    return () => { active = false }
+  }, [supabase])
 
-  // Load products when category changes
   useEffect(() => {
-    if (selectedCategory) {
-      loadProducts(selectedCategory)
-    }
-  }, [selectedCategory, searchQuery])
-
-  const loadCategories = async () => {
-    const { data } = await supabase
-      .from('categories')
-      .select('*')
-      .eq('is_active', true)
-      .order('sort_order')
-
-    setCategories(data || [])
-  }
-
-  const loadProducts = async (categoryId: string) => {
-    let query = supabase
-      .from('products')
-      .select('*')
-      .eq('category_id', categoryId)
-      .eq('is_active', true)
-      .order('brand')
-
-    if (searchQuery) {
-      query = query.or(`name.ilike.%${searchQuery}%,brand.ilike.%${searchQuery}%`)
-    }
-
-    const { data } = await query
-    setProducts(data || [])
-  }
+    if (!selectedCategory) return
+    let active = true
+    let query = supabase.from('products').select('*').eq('category_id', selectedCategory)
+      .eq('is_active', true).order('brand')
+    if (searchQuery) query = query.or(`name.ilike.%${searchQuery}%,brand.ilike.%${searchQuery}%`)
+    void query.then(({ data }) => { if (active) setProducts(data || []) })
+    return () => { active = false }
+  }, [selectedCategory, searchQuery, supabase])
 
   const handleSelectProduct = (product: Product) => {
     setSelectedProduct(product)
@@ -227,7 +206,7 @@ export function AddProductDialog({
                   </Label>
                   <Select value={unit} onValueChange={(value) => setUnit(value ?? '')}>
                     <SelectTrigger id="unit" className="h-10 w-full">
-                      <SelectValue />
+                      <SelectValue>{(value: string) => (value === 'custom' ? 'Custom...' : value)}</SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {units.map((u) => (

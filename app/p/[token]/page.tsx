@@ -6,6 +6,9 @@ import { PassportWarranty } from '@/components/passport/passport-warranty'
 import { PassportMaintenance } from '@/components/passport/passport-maintenance'
 import { PassportPhotos } from '@/components/passport/passport-photos'
 import { PassportContact } from '@/components/passport/passport-contact'
+import { PassportFooter } from '@/components/passport/passport-footer'
+import { PassportOverview } from '@/components/passport/passport-overview'
+import { PassportQR } from '@/components/passport/passport-qr'
 
 async function getPassportData(token: string) {
   const supabase = await createClient()
@@ -71,6 +74,7 @@ export default async function PassportPage({
   }
 
   const { project, areas, photos } = data
+  const passportUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/p/${token}`
 
   // Calculate warranty summary
   const allItems = areas.flatMap((area: any) => area.items)
@@ -83,6 +87,9 @@ export default async function PassportPage({
 
       {/* Main Content */}
       <div className="mx-auto max-w-3xl space-y-6 px-4 py-10 sm:px-6 lg:px-8">
+        <PassportOverview project={project} areas={areas} photoCount={photos.length} />
+        <PassportPhotos photos={photos} />
+
         {/* Products by Area */}
         <PassportProducts areas={areas} />
 
@@ -91,11 +98,10 @@ export default async function PassportPage({
           <PassportWarranty items={itemsWithWarranty} />
         )}
 
+        <PassportQR projectId={project.project_id} passportUrl={passportUrl} />
+
         {/* Maintenance Instructions */}
         <PassportMaintenance items={allItems} />
-
-        {/* Installation Photos */}
-        {photos.length > 0 && <PassportPhotos photos={photos} />}
 
         {/* Contact Section */}
         <PassportContact
@@ -105,15 +111,7 @@ export default async function PassportPage({
       </div>
 
       {/* Footer */}
-      <div className="mt-8 border-t border-border">
-        <div className="mx-auto max-w-3xl px-4 py-8 text-center text-sm text-muted-foreground sm:px-6 lg:px-8">
-          <p className="font-medium text-foreground">Project H Passport by Halla Home</p>
-          <p className="mt-1">
-            {project.project_id} • Published{' '}
-            {new Date(project.published_at).toLocaleDateString('id-ID')}
-          </p>
-        </div>
-      </div>
+      <PassportFooter projectId={project.project_id} publishedAt={project.published_at} />
     </div>
   )
 }

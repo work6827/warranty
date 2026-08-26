@@ -25,7 +25,7 @@ const commonAreas = [
 ]
 
 export function AreasStep() {
-  const { areas, addArea, removeArea, updateArea, setStep } = useProjectFormStore()
+  const { areas, addArea, removeArea, setStep } = useProjectFormStore()
   const [newAreaName, setNewAreaName] = useState('')
 
   const handleAddArea = () => {

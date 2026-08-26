@@ -69,6 +69,8 @@ DECLARE
   counter INTEGER;
   new_id TEXT;
 BEGIN
+  -- Serialize ID generation so concurrent publishes cannot receive the same ID.
+  PERFORM pg_advisory_xact_lock(hashtext('project-h-project-id'));
   date_part := TO_CHAR(CURRENT_DATE, 'YYMMDD');
   
   SELECT COALESCE(MAX(CAST(SUBSTRING(project_id FROM 10) AS INTEGER)), 0) + 1
@@ -288,20 +290,34 @@ CREATE TABLE warranties (
   duration_months INTEGER NOT NULL,
   expiration_date DATE NOT NULL,
   terms TEXT,
-  status TEXT GENERATED ALWAYS AS (
-    CASE
-      WHEN NOT is_enabled THEN 'no_warranty'
-      WHEN expiration_date < CURRENT_DATE THEN 'expired'
-      WHEN expiration_date <= CURRENT_DATE + INTERVAL '90 days' THEN 'expiring_soon'
-      ELSE 'active'
-    END
-  ) STORED,
+  -- Not a GENERATED column: CURRENT_DATE isn't IMMUTABLE, which Postgres
+  -- requires for generated expressions. A BEFORE INSERT/UPDATE trigger
+  -- (below) recomputes this instead — same "recomputed on write, not
+  -- continuously" behavior a STORED generated column would have had.
+  status TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE INDEX idx_warranties_status ON warranties(status);
 CREATE INDEX idx_warranties_expiration ON warranties(expiration_date);
+
+CREATE OR REPLACE FUNCTION calculate_warranty_status()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.status := CASE
+    WHEN NOT NEW.is_enabled THEN 'no_warranty'
+    WHEN NEW.expiration_date < CURRENT_DATE THEN 'expired'
+    WHEN NEW.expiration_date <= CURRENT_DATE + INTERVAL '90 days' THEN 'expiring_soon'
+    ELSE 'active'
+  END;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_warranty_status
+  BEFORE INSERT OR UPDATE ON warranties
+  FOR EACH ROW EXECUTE FUNCTION calculate_warranty_status();
 
 -- ============================================================================
 -- PROJECT PHOTOS
