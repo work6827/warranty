@@ -6,15 +6,8 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     * - api routes that don't need protection
-     */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
+  // Session refresh and authorization are only required for the admin area.
+  // Keeping public routes out of Proxy also prevents a Supabase configuration
+  // issue from taking down the customer-facing homepage.
+  matcher: ['/admin/:path*'],
 }
