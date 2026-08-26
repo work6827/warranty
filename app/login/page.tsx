@@ -16,7 +16,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
-  const supabase = createClient()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -24,6 +23,10 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
+      // Create the browser client only in response to user interaction.
+      // Instantiating it during render makes static prerendering depend on
+      // deployment environment variables and caused Vercel builds to fail.
+      const supabase = createClient()
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
