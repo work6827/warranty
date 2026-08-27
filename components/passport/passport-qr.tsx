@@ -43,7 +43,7 @@ export function PassportQR({ projectId, passportUrl }: { projectId: string; pass
           <p className="font-mono text-sm font-semibold tracking-wide text-foreground">{projectId}</p>
           <p className="mt-1 break-all text-xs text-muted-foreground">{passportUrl}</p>
         </div>
-        <a href={qrDataUrl} download={`project-h-${projectId}-qr.png`} className={buttonVariants({ size: 'lg', className: 'h-11 w-full' })}><Download className="size-4" />{locale === 'id' ? 'Unduh QR' : 'Download QR'}</a>
+        <a href={qrDataUrl} download={`halla-plus-${projectId}-qr.png`} className={buttonVariants({ size: 'lg', className: 'h-11 w-full' })}><Download className="size-4" />{locale === 'id' ? 'Unduh QR' : 'Download QR'}</a>
         <div className="flex items-start gap-2 rounded-xl bg-secondary p-3 text-xs text-muted-foreground"><ShieldCheck className="mt-0.5 size-3.5 shrink-0 text-brand" /><span>{locale === 'id' ? 'QR hanya menyimpan tautan aman paspor Anda—tidak menyimpan nomor telepon atau data pribadi.' : 'The QR contains only your secure passport link—never your phone number or personal details.'}</span></div>
       </DialogContent>
     </Dialog>

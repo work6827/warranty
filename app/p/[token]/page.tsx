@@ -8,6 +8,7 @@ import { PassportPhotos } from '@/components/passport/passport-photos'
 import { PassportContact } from '@/components/passport/passport-contact'
 import { PassportFooter } from '@/components/passport/passport-footer'
 import { PassportOverview } from '@/components/passport/passport-overview'
+import { getRequestOrigin } from '@/lib/utils/request-url'
 import { PassportQR } from '@/components/passport/passport-qr'
 
 async function getPassportData(token: string) {
@@ -74,7 +75,7 @@ export default async function PassportPage({
   }
 
   const { project, areas, photos } = data
-  const passportUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/p/${token}`
+  const passportUrl = `${await getRequestOrigin()}/p/${token}`
 
   // Calculate warranty summary
   const allItems = areas.flatMap((area: any) => area.items)

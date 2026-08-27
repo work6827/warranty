@@ -379,7 +379,7 @@ CREATE TABLE settings (
 INSERT INTO settings (key, value, description) VALUES
 ('company_name', 'Halla+', 'Company name displayed on passports'),
 ('company_whatsapp', '628123456789', 'WhatsApp number for customer contact'),
-('passport_url_prefix', 'https://projecth.hallahome.id/p/', 'Base URL for passport links');
+('passport_url_prefix', 'https://warranty-black.vercel.app/p/', 'Base URL for passport links');
 
 -- ============================================================================
 -- ROW LEVEL SECURITY (RLS)

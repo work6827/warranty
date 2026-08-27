@@ -6,6 +6,7 @@ import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { QRCodeDisplay } from '@/components/admin/qr-code-display'
 import { CopyLinkButton } from '@/components/admin/copy-link-button'
+import { getRequestOrigin } from '@/lib/utils/request-url'
 
 async function getProject(id: string) {
   const supabase = await createClient()
@@ -38,7 +39,7 @@ export default async function PublishedPage({
     redirect('/admin/projects')
   }
 
-  const passportUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/p/${project.public_token}`
+  const passportUrl = `${await getRequestOrigin()}/p/${project.public_token}`
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-14 sm:px-6 lg:px-8">
