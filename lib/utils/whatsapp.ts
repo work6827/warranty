@@ -11,19 +11,19 @@ export function generateWhatsAppUrl(phone: string, message: string): string {
  * Generate customer support message
  */
 export function generateSupportMessage(projectId: string, customerName: string): string {
-  return `Halo Halla Home, saya ${customerName} memerlukan bantuan untuk Project H Passport: ${projectId}`
+  return `Halo Halla+, saya ${customerName} memerlukan bantuan untuk Halla+ Digital Passport: ${projectId}`
 }
 
 /**
  * Generate service request message
  */
 export function generateServiceRequestMessage(projectId: string, customerName: string, productInfo: string): string {
-  return `Halo Halla Home, saya ${customerName} ingin request service untuk ${productInfo} (Project: ${projectId})`
+  return `Halo Halla+, saya ${customerName} ingin request service untuk ${productInfo} (Project: ${projectId})`
 }
 
 /**
  * Generate warranty inquiry message
  */
 export function generateWarrantyInquiryMessage(projectId: string, customerName: string): string {
-  return `Halo Halla Home, saya ${customerName} ingin menanyakan tentang warranty untuk Project: ${projectId}`
+  return `Halo Halla+, saya ${customerName} ingin menanyakan tentang warranty untuk Project: ${projectId}`
 }

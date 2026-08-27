@@ -4,8 +4,8 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { dictionary, type DictionaryKey, type Locale, type FontSize } from './dictionary'
 
-const LOCALE_KEY = 'halla-locale'
-const FONT_SIZE_KEY = 'halla-font-size'
+const LOCALE_KEY = 'halla-plus-locale'
+const FONT_SIZE_KEY = 'halla-plus-font-size'
 
 type LocaleContextValue = {
   locale: Locale

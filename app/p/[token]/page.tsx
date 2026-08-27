@@ -122,12 +122,12 @@ export async function generateMetadata({ params }: { params: Promise<{ token: st
 
   if (!data) {
     return {
-      title: 'Project H Passport',
+      title: 'Halla+ Digital Passport',
     }
   }
 
   return {
-    title: `${data.project.name} - Project H Passport`,
-    description: `Project H Passport for ${data.project.customer.name} - ${data.project.name}`,
+    title: `${data.project.name} - Halla+ Digital Passport`,
+    description: `Halla+ Digital Passport for ${data.project.customer.name} - ${data.project.name}`,
   }
 }

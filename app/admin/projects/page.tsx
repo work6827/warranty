@@ -45,7 +45,7 @@ export default async function ProjectsPage({
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">Projects</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Manage all Halla Home projects</p>
+          <p className="mt-1 text-sm text-muted-foreground">Manage all Halla+ projects</p>
         </div>
         <Link href="/admin/projects/new" className={buttonVariants({ size: 'lg', className: 'h-10 gap-1.5' })}>
           <Plus className="size-4" />

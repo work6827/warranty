@@ -41,7 +41,7 @@
 - [ ] Do all credentials have icons next to them?
 
 ### Company Section 🏆
-- [ ] Can you see Halla Home company info?
+- [ ] Can you see Halla+ company info?
 - [ ] Are there 3 colored badges (ISO, Authorized, 10+ Years)?
 - [ ] Are the WhatsApp and Request Service buttons visible?
 

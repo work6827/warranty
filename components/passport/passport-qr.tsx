@@ -33,7 +33,7 @@ export function PassportQR({ projectId, passportUrl }: { projectId: string; pass
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-md p-6">
         <DialogHeader className="pr-8 text-center">
-          <DialogTitle className="text-xl">{locale === 'id' ? 'QR Project H Anda' : 'Your Project H QR'}</DialogTitle>
+          <DialogTitle className="text-xl">{locale === 'id' ? 'QR Halla+ Anda' : 'Your Halla+ QR'}</DialogTitle>
           <DialogDescription>{locale === 'id' ? 'QR ini khusus untuk paspor proyek Anda.' : 'This QR is unique to your project passport.'}</DialogDescription>
         </DialogHeader>
         <div className="mx-auto rounded-3xl border border-border bg-white p-4 shadow-sm">

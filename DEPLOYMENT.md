@@ -1,4 +1,4 @@
-# Project H - Deployment Guide
+# Halla+ - Deployment Guide
 
 ## Pre-Deployment Checklist
 
@@ -19,7 +19,7 @@ Create production `.env.local`:
 NEXT_PUBLIC_SUPABASE_URL=https://your-prod-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_production_anon_key
 NEXT_PUBLIC_COMPANY_WHATSAPP=628123456789
-NEXT_PUBLIC_COMPANY_NAME=Halla Home
+NEXT_PUBLIC_COMPANY_NAME=Halla+
 NEXT_PUBLIC_BASE_URL=https://projecth.hallahome.id
 ```
 
@@ -289,4 +289,4 @@ Final checklist for go-live:
 - [ ] Support process ready
 - [ ] Announcement prepared
 
-🚀 **Ready to launch Project H!**
+🚀 **Ready to launch Halla+!**

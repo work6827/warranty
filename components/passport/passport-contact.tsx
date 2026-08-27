@@ -41,7 +41,7 @@ export function PassportContact({
           <a
             href={generateWhatsAppUrl(
               whatsappNumber,
-              `Halo Halla Home, saya ${customerName} ingin request service untuk Project: ${projectId}`
+              `Halo Halla+, saya ${customerName} ingin request service untuk Project: ${projectId}`
             )}
             target="_blank"
             rel="noopener noreferrer"

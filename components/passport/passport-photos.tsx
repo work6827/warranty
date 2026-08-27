@@ -37,7 +37,7 @@ export function PassportPhotos({ photos }: { photos: Photo[] }) {
     {photos.length === 0 ? <div className="flex min-h-64 flex-col items-center justify-center bg-secondary/30 p-8 text-center">
       <div className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-card shadow-sm"><Images className="size-6 text-muted-foreground" /></div>
       <p className="font-medium text-foreground">{locale === 'id' ? 'Dokumentasi belum tersedia' : 'Installation photos are not available yet'}</p>
-      <p className="mt-1 max-w-sm text-sm text-muted-foreground">{locale === 'id' ? 'Hubungi Halla Home jika Anda membutuhkan dokumentasi hasil pemasangan.' : 'Contact Halla Home if you need installation documentation added to this passport.'}</p>
+      <p className="mt-1 max-w-sm text-sm text-muted-foreground">{locale === 'id' ? 'Hubungi Halla+ jika Anda membutuhkan dokumentasi hasil pemasangan.' : 'Contact Halla+ if you need installation documentation added to this passport.'}</p>
     </div> : <div className="grid auto-rows-[150px] grid-cols-2 gap-2 p-2 sm:auto-rows-[190px] sm:grid-cols-3">
       {filtered.map((photo, index) => <button key={photo.id} onClick={() => setSelected(photo)} className={`group relative overflow-hidden rounded-2xl bg-secondary ${index === 0 ? 'col-span-2 row-span-2' : ''}`}>
         <img src={photo.file_url} alt={photo.caption || 'Installation result'} className="size-full object-cover transition duration-500 group-hover:scale-105" />

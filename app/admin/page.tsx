@@ -57,7 +57,7 @@ export default async function AdminDashboard() {
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">Dashboard</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Welcome to Project H Admin Portal</p>
+          <p className="mt-1 text-sm text-muted-foreground">Welcome to the Halla+ Admin Portal</p>
         </div>
         <Link href="/admin/projects/new" className={buttonVariants({ size: 'lg', className: 'h-10 gap-1.5' })}>
           <Plus className="size-4" />

@@ -152,7 +152,7 @@ export default function NewProductPage() {
 
       <div className="mb-8">
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">Add New Product</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Add a product to the Halla Home catalog</p>
+        <p className="mt-1 text-sm text-muted-foreground">Add a product to the Halla+ catalog</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">

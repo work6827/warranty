@@ -1,10 +1,7 @@
 import { cn } from '@/lib/utils'
 
 /**
- * The Halla Home mark: a quiet monogram (a roofline resolving into an "H")
- * plus a two-tier wordmark — "Halla Home" as the company, "Project H" as
- * the passport product it issues. Used across the public site, the
- * passport, and the admin console so the whole system reads as one brand.
+ * The Halla+ mark, used across the public site, passports, and admin console.
  */
 export function Logo({
   className,
@@ -25,11 +22,11 @@ export function Logo({
             size === 'sm' ? 'text-[15px]' : 'text-[17px]'
           )}
         >
-          Halla Home
+          Halla+
         </div>
         {tagline && (
           <div className="mt-0.5 text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
-            Project H Passport
+            Digital Passport
           </div>
         )}
       </div>

@@ -47,7 +47,7 @@ export default async function PublishedPage({
           <CheckCircle2 className="size-7 text-brand" />
         </div>
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          Project H Passport Ready
+          Halla+ Digital Passport Ready
         </h1>
         <p className="mt-1 text-muted-foreground">
           {project.project_id} has been successfully published
@@ -80,7 +80,7 @@ export default async function PublishedPage({
       <div className="space-y-3">
         <a
           href={`https://wa.me/${project.customer?.phone}?text=${encodeURIComponent(
-            `Halo ${project.customer?.name}, ini adalah Project H Passport untuk ${project.name}: ${passportUrl}`
+            `Halo ${project.customer?.name}, ini adalah Halla+ Digital Passport untuk ${project.name}: ${passportUrl}`
           )}`}
           target="_blank"
           rel="noopener noreferrer"

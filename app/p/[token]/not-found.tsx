@@ -25,12 +25,12 @@ export default function PassportNotFound() {
           Passport Not Found
         </h1>
         <p className="text-neutral-600 mb-6">
-          This Project H Passport doesn&apos;t exist or has been removed.
+          This Halla+ Digital Passport doesn&apos;t exist or has been removed.
         </p>
 
         <div className="space-y-3">
           <p className="text-sm text-neutral-500">
-            If you believe this is a mistake, please contact Halla Home.
+            If you believe this is a mistake, please contact Halla+.
           </p>
           <Link href="/" className={buttonVariants({ className: 'mt-3 h-10' })}>
             Back to home

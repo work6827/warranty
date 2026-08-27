@@ -1,4 +1,4 @@
--- Project H Database Schema for Supabase
+-- Halla+ Database Schema for Supabase
 -- This schema is designed for flexibility and multi-category support
 
 -- Enable UUID extension
@@ -377,7 +377,7 @@ CREATE TABLE settings (
 );
 
 INSERT INTO settings (key, value, description) VALUES
-('company_name', 'Halla Home', 'Company name displayed on passports'),
+('company_name', 'Halla+', 'Company name displayed on passports'),
 ('company_whatsapp', '628123456789', 'WhatsApp number for customer contact'),
 ('passport_url_prefix', 'https://projecth.hallahome.id/p/', 'Base URL for passport links');
 

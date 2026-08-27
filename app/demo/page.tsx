@@ -36,7 +36,7 @@ export default function DemoPassportPage() {
               PIK Residence
             </h1>
             <p className="text-xl sm:text-2xl text-white/70 font-light max-w-2xl mx-auto">
-              Premium interior finishing by Halla Home
+              Premium interior finishing by Halla+
             </p>
           </div>
 
@@ -606,7 +606,7 @@ export default function DemoPassportPage() {
                     </svg>
                   </div>
                   <div>
-                    <div className="font-semibold text-neutral-900 text-lg mb-1">Halla Home</div>
+                    <div className="font-semibold text-neutral-900 text-lg mb-1">Halla+</div>
                     <p className="text-neutral-600">Professional Interior Finishing & Building Materials</p>
                     <div className="mt-3 flex flex-wrap gap-2">
                       <div className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-medium">ISO Certified</div>
@@ -625,9 +625,9 @@ export default function DemoPassportPage() {
       <div className="border-t border-neutral-200 bg-neutral-50 mt-16">
         <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
           <div className="text-center space-y-2">
-            <div className="text-sm font-medium text-neutral-900">Project H Digital Passport</div>
+            <div className="text-sm font-medium text-neutral-900">Halla+ Digital Passport</div>
             <div className="text-sm text-neutral-500">H-260824-001 • Published August 24, 2026</div>
-            <div className="text-xs text-neutral-400 pt-4">Powered by Halla Home © 2026</div>
+            <div className="text-xs text-neutral-400 pt-4">Powered by Halla+ © 2026</div>
           </div>
         </div>
       </div>

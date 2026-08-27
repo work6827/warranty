@@ -72,7 +72,7 @@ export default async function ProductsPage({
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">Product Catalog</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage Halla Home products across all categories
+            Manage Halla+ products across all categories
           </p>
         </div>
         <Link href="/admin/products/new" className={buttonVariants({ size: 'lg', className: 'h-10 gap-1.5' })}>

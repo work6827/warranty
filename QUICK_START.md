@@ -1,6 +1,6 @@
-# Project H - Quick Start Guide
+# Halla+ - Quick Start Guide
 
-Get Project H running in 10 minutes.
+Get Halla+ running in 10 minutes.
 
 ## Step 1: Install Dependencies (1 min)
 
@@ -24,7 +24,7 @@ Create `.env.local`:
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
 NEXT_PUBLIC_COMPANY_WHATSAPP=628123456789
-NEXT_PUBLIC_COMPANY_NAME=Halla Home
+NEXT_PUBLIC_COMPANY_NAME=Halla+
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
 

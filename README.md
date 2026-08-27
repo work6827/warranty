@@ -1,17 +1,17 @@
-# Project H - Halla Home Digital Passport System
+# Halla+ Digital Passport System
 
 A production-quality MVP web application for managing interior finishing projects, generating digital project passports, and providing warranty tracking via QR codes.
 
 ## 🎯 Product Vision
 
-Project H is Halla Home's **digital project identity, product record, installation documentation, warranty, and after-sales platform**.
+Halla+ is a **digital project identity, product record, installation documentation, warranty, and after-sales platform**.
 
-Every completed Halla Home project receives a unique digital **Project H Passport** that provides:
+Every completed Halla+ project receives a unique **Halla+ Digital Passport** that provides:
 - Complete product records with specifications
 - Installation documentation with photos
 - Warranty tracking and expiration monitoring
 - Maintenance instructions
-- Direct contact with Halla Home support
+- Direct contact with Halla+ support
 
 ## ✨ Key Features
 
@@ -77,7 +77,7 @@ Copy `.env.local.example` to `.env.local` and fill in your Supabase credentials:
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 NEXT_PUBLIC_COMPANY_WHATSAPP=628123456789
-NEXT_PUBLIC_COMPANY_NAME=Halla Home
+NEXT_PUBLIC_COMPANY_NAME=Halla+
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
 
@@ -178,7 +178,7 @@ When a customer scans the QR code:
 
 ## 🎨 Design Philosophy
 
-Project H follows these principles:
+Halla+ follows these principles:
 
 - **Clarity**: The next action should always be obvious
 - **Restraint**: Avoid unnecessary visual decoration
@@ -217,7 +217,7 @@ Project H follows these principles:
 NEXT_PUBLIC_SUPABASE_URL=your_production_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_production_key
 NEXT_PUBLIC_COMPANY_WHATSAPP=628123456789
-NEXT_PUBLIC_COMPANY_NAME=Halla Home
+NEXT_PUBLIC_COMPANY_NAME=Halla+
 NEXT_PUBLIC_BASE_URL=https://your-domain.com
 ```
 
@@ -298,8 +298,8 @@ Instant Passport Access
 
 ## 🤝 Support
 
-For questions or issues, contact the Halla Home development team.
+For questions or issues, contact the Halla+ development team.
 
 ---
 
-**Project H** - Making Halla Home installations feel documented, traceable, professional, premium, and supported.
+**Halla+** - Making installations feel documented, traceable, professional, premium, and supported.

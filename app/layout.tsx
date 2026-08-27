@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Halla Home — Project H Passport",
-    template: "%s — Halla Home",
+    default: "Halla+ — Digital Passport",
+    template: "%s — Halla+",
   },
   description:
-    "The digital record for everything Halla Home installed in your home: product specs, warranty status, and maintenance guidance.",
+    "Your Halla+ digital record for product specifications, warranty status, and maintenance guidance.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
