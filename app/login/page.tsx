@@ -99,7 +99,7 @@ export default function LoginPage() {
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
           <Link href="/" className="hover:text-foreground">
-            ← Back to hallahome.id
+            ← Back to Halla+
           </Link>
         </p>
       </div>
