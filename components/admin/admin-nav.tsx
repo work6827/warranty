@@ -5,7 +5,9 @@ import { usePathname, useRouter } from 'next/navigation'
 import { LayoutDashboard, Users, Package, HardHat, FolderKanban } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Logo } from '@/components/brand/logo'
+import { SettingsMenu } from '@/components/settings/settings-menu'
 import { buttonVariants } from '@/components/ui/button'
+import { useLocale } from '@/lib/i18n/locale-context'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,16 +18,17 @@ import {
 import { cn } from '@/lib/utils'
 
 const navItems = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/projects', label: 'Projects', icon: FolderKanban },
-  { href: '/admin/customers', label: 'Customers', icon: Users },
-  { href: '/admin/products', label: 'Products', icon: Package },
-  { href: '/admin/installers', label: 'Technicians', icon: HardHat },
-]
+  { href: '/admin', labelKey: 'admin.nav.dashboard', icon: LayoutDashboard },
+  { href: '/admin/projects', labelKey: 'admin.nav.projects', icon: FolderKanban },
+  { href: '/admin/customers', labelKey: 'admin.nav.customers', icon: Users },
+  { href: '/admin/products', labelKey: 'admin.nav.products', icon: Package },
+  { href: '/admin/installers', labelKey: 'admin.nav.technicians', icon: HardHat },
+] as const
 
 export function AdminNav({ userEmail }: { userEmail?: string }) {
   const pathname = usePathname()
   const router = useRouter()
+  const { t } = useLocale()
   const supabase = createClient()
 
   const handleSignOut = async () => {
@@ -39,12 +42,14 @@ export function AdminNav({ userEmail }: { userEmail?: string }) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link href="/admin">
+            <Link href="/" aria-label="Go to Halla+ homepage">
               <Logo size="sm" tagline={false} />
             </Link>
             <div className="hidden gap-1 sm:flex">
               {navItems.map((item) => {
-                const active = pathname === item.href
+                const active = item.href === '/admin'
+                  ? pathname === item.href
+                  : pathname.startsWith(item.href)
                 return (
                   <Link
                     key={item.href}
@@ -57,25 +62,28 @@ export function AdminNav({ userEmail }: { userEmail?: string }) {
                     )}
                   >
                     <item.icon className="size-4" />
-                    {item.label}
+                    {t(item.labelKey)}
                   </Link>
                 )
               })}
             </div>
           </div>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger className={buttonVariants({ variant: 'ghost', className: 'text-sm' })}>
-              {userEmail || 'Admin'}
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem disabled className="text-xs text-muted-foreground">
-                {userEmail}
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleSignOut}>Sign Out</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex items-center gap-1">
+            <SettingsMenu />
+            <DropdownMenu>
+              <DropdownMenuTrigger className={buttonVariants({ variant: 'ghost', className: 'max-w-44 truncate text-sm' })}>
+                {userEmail || 'Admin'}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem disabled className="text-xs text-muted-foreground">
+                  {userEmail}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>{t('admin.nav.signOut')}</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </div>
     </nav>

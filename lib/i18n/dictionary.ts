@@ -2,9 +2,7 @@ export type Locale = 'en' | 'id'
 export type FontSize = 'sm' | 'md' | 'lg'
 export type ColorTheme = 'champagne' | 'forest' | 'oxblood' | 'slate'
 
-// Flat key → { en, id } dictionary. Scoped to the customer-facing surfaces
-// (home page, passport, and the settings menu itself) — the admin console
-// is an internal Halla+ tool and stays English-only by design.
+// Flat key → { en, id } dictionary shared by public and admin surfaces.
 export const dictionary = {
   'settings.label': { en: 'Settings', id: 'Pengaturan' },
   'settings.language': { en: 'Language', id: 'Bahasa' },
@@ -19,6 +17,13 @@ export const dictionary = {
   'settings.fontSize.lg': { en: 'Large', id: 'Besar' },
 
   'nav.adminLogin': { en: 'Admin login', id: 'Masuk Admin' },
+
+  'admin.nav.dashboard': { en: 'Dashboard', id: 'Dasbor' },
+  'admin.nav.projects': { en: 'Projects', id: 'Proyek' },
+  'admin.nav.customers': { en: 'Customers', id: 'Pelanggan' },
+  'admin.nav.products': { en: 'Products', id: 'Produk' },
+  'admin.nav.technicians': { en: 'Technicians', id: 'Teknisi' },
+  'admin.nav.signOut': { en: 'Sign out', id: 'Keluar' },
 
   'home.badge': { en: 'Verified Halla+ installation', id: 'Instalasi Halla+ terverifikasi' },
   'home.hero.title': {
