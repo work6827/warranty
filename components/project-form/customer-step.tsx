@@ -10,8 +10,11 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
+import { useLocale } from '@/lib/i18n/locale-context'
 
 export function CustomerStep() {
+  const { locale } = useLocale()
+  const c = (en: string, id: string) => locale === 'id' ? id : en
   const supabase = createClient()
   const { customerData, setCustomer, setStep } = useProjectFormStore()
 
@@ -48,7 +51,7 @@ export function CustomerStep() {
 
   const handleCreateCustomer = async () => {
     if (!newCustomer.name || !newCustomer.phone) {
-      alert('Name and phone are required')
+      alert(c('Name and phone are required', 'Nama dan nomor telepon wajib diisi'))
       return
     }
 
@@ -59,7 +62,7 @@ export function CustomerStep() {
       .single()
 
     if (error) {
-      alert('Error creating customer: ' + error.message)
+      alert(c('Error creating customer: ', 'Gagal membuat pelanggan: ') + error.message)
       return
     }
 
@@ -74,7 +77,7 @@ export function CustomerStep() {
 
   const handleContinue = () => {
     if (!selectedCustomer) {
-      alert('Please select a customer')
+      alert(c('Please select a customer', 'Silakan pilih pelanggan'))
       return
     }
     setStep('project')
@@ -83,20 +86,20 @@ export function CustomerStep() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Step 1: Customer Information</CardTitle>
+        <CardTitle className="text-base">{c('Step 1: Customer Information', 'Langkah 1: Informasi Pelanggan')}</CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue={customerData ? 'existing' : 'new'} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="new">New Customer</TabsTrigger>
-            <TabsTrigger value="existing">Existing Customer</TabsTrigger>
+            <TabsTrigger value="new">{c('New Customer', 'Pelanggan Baru')}</TabsTrigger>
+            <TabsTrigger value="existing">{c('Existing Customer', 'Pelanggan Terdaftar')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="new" className="space-y-4">
             <div className="space-y-4">
               <div className="space-y-1.5">
                 <Label htmlFor="name">
-                  Customer Name <span className="text-destructive">*</span>
+                  {c('Customer Name', 'Nama Pelanggan')} <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="name"
@@ -109,7 +112,7 @@ export function CustomerStep() {
 
               <div className="space-y-1.5">
                 <Label htmlFor="phone">
-                  Phone Number <span className="text-destructive">*</span>
+                  {c('Phone Number', 'Nomor Telepon')} <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="phone"
@@ -121,7 +124,7 @@ export function CustomerStep() {
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="email">Email (Optional)</Label>
+                <Label htmlFor="email">{c('Email (Optional)', 'Email (Opsional)')}</Label>
                 <Input
                   id="email"
                   type="email"
@@ -133,12 +136,12 @@ export function CustomerStep() {
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="address">Address (Internal Only)</Label>
+                <Label htmlFor="address">{c('Address (Internal Only)', 'Alamat (Internal Saja)')}</Label>
                 <Textarea
                   id="address"
                   value={newCustomer.address}
                   onChange={(e) => setNewCustomer({ ...newCustomer, address: e.target.value })}
-                  placeholder="Full address"
+                  placeholder={c('Full address', 'Alamat lengkap')}
                   rows={3}
                 />
               </div>
@@ -146,7 +149,7 @@ export function CustomerStep() {
 
             <div className="flex justify-end pt-2">
               <Button onClick={handleCreateCustomer} size="lg" className="h-10">
-                Continue to Project
+                {c('Continue to Project', 'Lanjut ke Proyek')}
               </Button>
             </div>
           </TabsContent>
@@ -154,19 +157,19 @@ export function CustomerStep() {
           <TabsContent value="existing" className="space-y-4">
             <div className="space-y-4">
               <div className="space-y-1.5">
-                <Label htmlFor="search">Search Customer</Label>
+                <Label htmlFor="search">{c('Search Customer', 'Cari Pelanggan')}</Label>
                 <Input
                   id="search"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search by name or phone..."
+                  placeholder={c('Search by name or phone...', 'Cari berdasarkan nama atau telepon...')}
                   className="h-10"
                 />
               </div>
 
               <div className="max-h-96 space-y-2 overflow-y-auto">
                 {existingCustomers.length === 0 ? (
-                  <p className="py-8 text-center text-muted-foreground">No customers found</p>
+                  <p className="py-8 text-center text-muted-foreground">{c('No customers found', 'Pelanggan tidak ditemukan')}</p>
                 ) : (
                   existingCustomers.map((customer) => (
                     <button
@@ -192,7 +195,7 @@ export function CustomerStep() {
 
             <div className="flex justify-end pt-2">
               <Button onClick={handleContinue} size="lg" disabled={!selectedCustomer} className="h-10">
-                Continue to Project
+                {c('Continue to Project', 'Lanjut ke Proyek')}
               </Button>
             </div>
           </TabsContent>

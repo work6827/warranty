@@ -3,6 +3,7 @@
 import { Check } from 'lucide-react'
 import { useProjectFormStore, ProjectFormStep } from '@/lib/store/project-form-store'
 import { cn } from '@/lib/utils'
+import { useLocale } from '@/lib/i18n/locale-context'
 
 const steps: { key: ProjectFormStep; label: string; number: number }[] = [
   { key: 'customer', label: 'Customer', number: 1 },
@@ -15,8 +16,12 @@ const steps: { key: ProjectFormStep; label: string; number: number }[] = [
 ]
 
 export function StepIndicator() {
+  const { locale } = useLocale()
   const currentStep = useProjectFormStore((state) => state.currentStep)
   const currentStepIndex = steps.findIndex((s) => s.key === currentStep)
+  const labels: Record<ProjectFormStep, string> = locale === 'id'
+    ? { customer: 'Pelanggan', project: 'Proyek', areas: 'Area', products: 'Produk', installation: 'Instalasi', warranty: 'Garansi', review: 'Tinjau' }
+    : { customer: 'Customer', project: 'Project', areas: 'Areas', products: 'Products', installation: 'Installation', warranty: 'Warranty', review: 'Review' }
 
   return (
     <div className="overflow-x-auto pb-1">
@@ -48,7 +53,7 @@ export function StepIndicator() {
                         : 'text-muted-foreground/60'
                   )}
                 >
-                  {step.label}
+                  {labels[step.key]}
                 </span>
               </div>
               {index < steps.length - 1 && (

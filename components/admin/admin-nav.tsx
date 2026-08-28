@@ -28,7 +28,7 @@ const navItems = [
 export function AdminNav({ userEmail }: { userEmail?: string }) {
   const pathname = usePathname()
   const router = useRouter()
-  const { t } = useLocale()
+  const { locale, t } = useLocale()
   const supabase = createClient()
 
   const handleSignOut = async () => {
@@ -42,7 +42,7 @@ export function AdminNav({ userEmail }: { userEmail?: string }) {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-[68px] items-center justify-between gap-4">
           <div className="flex min-w-0 items-center gap-5 lg:gap-7">
-            <Link href="/" aria-label="Go to Halla+ homepage">
+            <Link href="/" aria-label={locale === 'id' ? 'Ke beranda Halla+' : 'Go to Halla+ homepage'}>
               <Logo size="sm" tagline={false} />
             </Link>
             <div className="hidden gap-1 sm:flex">
@@ -55,13 +55,13 @@ export function AdminNav({ userEmail }: { userEmail?: string }) {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'relative flex items-center gap-1.5 px-2.5 py-2 text-sm font-medium transition-colors after:absolute after:right-3 after:bottom-0 after:left-3 after:h-px after:origin-center after:scale-x-0 after:bg-brand after:transition-transform lg:px-3',
+                      'relative flex items-center gap-2 px-2.5 py-2 text-sm font-medium transition-colors after:absolute after:right-3 after:bottom-0 after:left-3 after:h-0.5 after:origin-center after:scale-x-0 after:rounded-full after:bg-signal after:transition-transform lg:px-3',
                       active
                         ? 'text-foreground after:scale-x-100'
                         : 'text-muted-foreground hover:text-foreground'
                     )}
                   >
-                    <item.icon className="size-4" />
+                    <item.icon className={cn('size-[19px]', active ? 'text-brand' : 'text-muted-foreground')} strokeWidth={1.8} />
                     {t(item.labelKey)}
                   </Link>
                 )
@@ -73,11 +73,11 @@ export function AdminNav({ userEmail }: { userEmail?: string }) {
             <SettingsMenu />
             <DropdownMenu>
               <DropdownMenuTrigger
-                aria-label="Open admin account menu"
+                aria-label={locale === 'id' ? 'Buka menu akun admin' : 'Open admin account menu'}
                 className={buttonVariants({ variant: 'ghost', className: 'h-9 gap-2 rounded-full pr-2 pl-1.5' })}
               >
                 <span className="flex size-6 items-center justify-center rounded-full bg-secondary text-muted-foreground">
-                  <CircleUserRound className="size-3.5" />
+                  <CircleUserRound className="size-4" />
                 </span>
                 <span className="hidden text-sm lg:inline">Admin</span>
                 <ChevronDown className="size-3.5 text-muted-foreground" />

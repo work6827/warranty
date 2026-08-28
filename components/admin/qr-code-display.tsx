@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react'
 import { Download } from 'lucide-react'
 import { generateQRCode } from '@/lib/utils/qr'
+import { useLocale } from '@/lib/i18n/locale-context'
 
 export function QRCodeDisplay({ url }: { url: string }) {
+  const { locale } = useLocale()
   const [qrDataUrl, setQrDataUrl] = useState<string>('')
   const [loading, setLoading] = useState(true)
 
@@ -34,7 +36,7 @@ export function QRCodeDisplay({ url }: { url: string }) {
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <Download className="size-3.5" />
-            Download QR Code
+            {locale === 'id' ? 'Unduh Kode QR' : 'Download QR Code'}
           </a>
         </>
       )}

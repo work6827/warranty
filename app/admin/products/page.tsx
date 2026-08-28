@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
+import { getServerLocale, translate } from '@/lib/i18n/server'
 
 async function getProducts(categorySlug?: string, search?: string) {
   const supabase = await createClient()
@@ -65,19 +66,21 @@ export default async function ProductsPage({
   const categories = await getCategories()
   const products = await getProducts(params.category, params.search)
   const activeCategory = params.category || 'all'
+  const locale = await getServerLocale()
+  const t = (key: Parameters<typeof translate>[1]) => translate(locale, key)
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Product Catalog</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">{t('admin.products.title')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage Halla+ products across all categories
+            {t('admin.products.subtitle')}
           </p>
         </div>
         <Link href="/admin/products/new" className={buttonVariants({ size: 'lg', className: 'h-10 gap-1.5' })}>
           <Plus className="size-4" />
-          Add Product
+          {t('admin.products.add')}
         </Link>
       </div>
 
@@ -85,7 +88,7 @@ export default async function ProductsPage({
         <form action="/admin/products" method="get">
           <Input
             name="search"
-            placeholder="Search products by name or brand…"
+            placeholder={t('admin.products.search')}
             defaultValue={params.search}
             className="h-10 max-w-md"
           />
@@ -104,7 +107,7 @@ export default async function ProductsPage({
                 : 'text-muted-foreground hover:text-foreground'
             )}
           >
-            All Products
+            {t('admin.products.all')}
           </Link>
           {categories.map((category) => (
             <Link
@@ -127,10 +130,10 @@ export default async function ProductsPage({
             <CardContent className="flex flex-col items-center gap-3 py-16 text-center">
               <PackageSearch className="size-8 text-muted-foreground/50" />
               <p className="text-muted-foreground">
-                {params.search ? 'No products found' : 'No products yet'}
+                {params.search ? t('admin.products.notFound') : t('admin.products.empty')}
               </p>
               <Link href="/admin/products/new" className={buttonVariants()}>
-                Add Your First Product
+                {t('admin.products.add')}
               </Link>
             </CardContent>
           </Card>
@@ -154,12 +157,12 @@ export default async function ProductsPage({
                   )}
                   {product.default_warranty_months > 0 && (
                     <p className="text-xs text-muted-foreground">
-                      Default warranty: {product.default_warranty_months} months
+                      {t('admin.products.warranty')}: {product.default_warranty_months} months
                     </p>
                   )}
                   <div>
                     <Badge variant={product.is_active ? 'default' : 'secondary'}>
-                      {product.is_active ? 'Active' : 'Inactive'}
+                      {product.is_active ? t('admin.common.active') : t('admin.common.inactive')}
                     </Badge>
                   </div>
                 </CardContent>

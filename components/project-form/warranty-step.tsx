@@ -8,8 +8,11 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Alert } from '@/components/ui/alert'
 import { calculateExpirationDate } from '@/lib/utils/date'
+import { useLocale } from '@/lib/i18n/locale-context'
 
 export function WarrantyStep() {
+  const { locale } = useLocale()
+  const c = (en: string, id: string) => locale === 'id' ? id : en
   const { areas, updateItem, setStep } = useProjectFormStore()
 
   const handleToggleWarranty = (itemId: string, currentWarranty: any) => {
@@ -70,14 +73,14 @@ export function WarrantyStep() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Step 6: Warranty Configuration</CardTitle>
+        <CardTitle className="text-base">{c('Step 6: Warranty Configuration', 'Langkah 6: Konfigurasi Garansi')}</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Configure warranty for each product ({itemsWithWarranty.length} of {allItems.length} covered)
+          {c('Configure warranty for each product', 'Atur garansi untuk setiap produk')} ({itemsWithWarranty.length} {c('of', 'dari')} {allItems.length} {c('covered', 'terlindungi')})
         </p>
       </CardHeader>
       <CardContent className="space-y-6">
         {allItems.length === 0 ? (
-          <Alert>No products added yet. Please add products first.</Alert>
+          <Alert>{c('No products added yet. Please add products first.', 'Belum ada produk. Tambahkan produk terlebih dahulu.')}</Alert>
         ) : (
           <div className="space-y-4">
             {allItems.map((item) => {
@@ -94,7 +97,7 @@ export function WarrantyStep() {
                       </p>
                       {item.product?.default_warranty_months > 0 && (
                         <p className="mt-1 text-xs text-muted-foreground">
-                          Default: {item.product.default_warranty_months} months warranty
+                          {c('Default', 'Bawaan')}: {item.product.default_warranty_months} {c('months warranty', 'bulan garansi')}
                         </p>
                       )}
                     </div>
@@ -103,7 +106,7 @@ export function WarrantyStep() {
                       size="sm"
                       onClick={() => handleToggleWarranty(item.id, warranty)}
                     >
-                      {isEnabled ? 'Warranty Enabled' : 'Enable Warranty'}
+                      {isEnabled ? c('Warranty Enabled', 'Garansi Aktif') : c('Enable Warranty', 'Aktifkan Garansi')}
                     </Button>
                   </div>
 
@@ -111,7 +114,7 @@ export function WarrantyStep() {
                     <div className="space-y-3 border-t border-border pt-3">
                       <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                         <div className="space-y-1.5">
-                          <Label>Start Date</Label>
+                          <Label>{c('Start Date', 'Tanggal Mulai')}</Label>
                           <Input
                             type="date"
                             value={warranty.start_date || ''}
@@ -123,7 +126,7 @@ export function WarrantyStep() {
                         </div>
 
                         <div className="space-y-1.5">
-                          <Label>Duration (months)</Label>
+                          <Label>{c('Duration (months)', 'Durasi (bulan)')}</Label>
                           <Input
                             type="number"
                             min="1"
@@ -136,7 +139,7 @@ export function WarrantyStep() {
                         </div>
 
                         <div className="space-y-1.5">
-                          <Label>Expires On</Label>
+                          <Label>{c('Expires On', 'Berakhir Pada')}</Label>
                           <Input
                             type="date"
                             value={warranty.expiration_date || ''}
@@ -149,11 +152,11 @@ export function WarrantyStep() {
                       </div>
 
                       <div className="space-y-1.5">
-                        <Label>Warranty Terms (Optional)</Label>
+                        <Label>{c('Warranty Terms (Optional)', 'Ketentuan Garansi (Opsional)')}</Label>
                         <Textarea
                           value={warranty.terms || ''}
                           onChange={(e) => handleUpdateWarranty(item.id, warranty, 'terms', e.target.value)}
-                          placeholder="Specific warranty terms or conditions..."
+                          placeholder={c('Specific warranty terms or conditions...', 'Ketentuan atau syarat garansi khusus...')}
                           rows={2}
                         />
                       </div>
@@ -166,14 +169,14 @@ export function WarrantyStep() {
         )}
 
         <div className="rounded-lg bg-secondary p-4">
-          <h4 className="mb-2 font-medium text-foreground">Warranty Summary</h4>
+          <h4 className="mb-2 font-medium text-foreground">{c('Warranty Summary', 'Ringkasan Garansi')}</h4>
           <div className="space-y-1 text-sm text-muted-foreground">
             <p>
-              Products with warranty: <strong className="text-foreground">{itemsWithWarranty.length}</strong> of{' '}
+              {c('Products with warranty', 'Produk dengan garansi')}: <strong className="text-foreground">{itemsWithWarranty.length}</strong> {c('of', 'dari')}{' '}
               {allItems.length}
             </p>
             <p>
-              Products without warranty:{' '}
+              {c('Products without warranty', 'Produk tanpa garansi')}:{' '}
               <strong className="text-foreground">{allItems.length - itemsWithWarranty.length}</strong>
             </p>
           </div>
@@ -181,10 +184,10 @@ export function WarrantyStep() {
 
         <div className="flex justify-between pt-2">
           <Button variant="outline" onClick={handleBack} className="h-10">
-            Back
+            {c('Back', 'Kembali')}
           </Button>
           <Button onClick={handleContinue} size="lg" className="h-10">
-            Continue to Review
+            {c('Continue to Review', 'Lanjut ke Tinjauan')}
           </Button>
         </div>
       </CardContent>

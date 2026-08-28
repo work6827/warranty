@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/set-state-in-effect -- preferences are synchronized from browser storage after hydration */
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { dictionary, type DictionaryKey, type Locale, type FontSize, type ColorTheme } from './dictionary'
 
 const LOCALE_KEY = 'halla-plus-locale'
@@ -20,10 +21,11 @@ type LocaleContextValue = {
 
 const LocaleContext = createContext<LocaleContextValue | null>(null)
 
-export function LocaleProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>('en')
+export function LocaleProvider({ children, initialLocale = 'en' }: { children: React.ReactNode; initialLocale?: Locale }) {
+  const router = useRouter()
+  const [locale, setLocaleState] = useState<Locale>(initialLocale)
   const [fontSize, setFontSizeState] = useState<FontSize>('md')
-  const [colorTheme, setColorThemeState] = useState<ColorTheme>('champagne')
+  const [colorTheme, setColorThemeState] = useState<ColorTheme>('signature')
 
   // Read stored preferences after mount only — avoids a server/client
   // hydration mismatch, at the cost of one render in the default (en/md)
@@ -31,17 +33,24 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const storedLocale = localStorage.getItem(LOCALE_KEY)
-      if (storedLocale === 'en' || storedLocale === 'id') setLocaleState(storedLocale)
+      if ((storedLocale === 'en' || storedLocale === 'id') && storedLocale !== initialLocale) {
+        setLocaleState(storedLocale)
+        document.documentElement.lang = storedLocale
+        document.cookie = `${LOCALE_KEY}=${storedLocale};path=/;max-age=31536000;SameSite=Lax`
+        router.refresh()
+      }
       const storedSize = localStorage.getItem(FONT_SIZE_KEY)
       if (storedSize === 'sm' || storedSize === 'md' || storedSize === 'lg') setFontSizeState(storedSize)
       const storedTheme = localStorage.getItem(COLOR_THEME_KEY)
-      if (storedTheme === 'champagne' || storedTheme === 'forest' || storedTheme === 'oxblood' || storedTheme === 'slate') {
+      if (storedTheme === 'signature' || storedTheme === 'forest' || storedTheme === 'oxblood' || storedTheme === 'slate') {
         setColorThemeState(storedTheme)
+      } else if (storedTheme === 'champagne') {
+        setColorThemeState('signature')
       }
     } catch {
       // localStorage unavailable (private mode, etc.) — fall back to defaults
     }
-  }, [])
+  }, [initialLocale, router])
 
   useEffect(() => {
     if (fontSize === 'md') {
@@ -57,12 +66,15 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
 
   const setLocale = useCallback((next: Locale) => {
     setLocaleState(next)
+    document.documentElement.lang = next
+    document.cookie = `${LOCALE_KEY}=${next};path=/;max-age=31536000;SameSite=Lax`
     try {
       localStorage.setItem(LOCALE_KEY, next)
     } catch {
       // ignore
     }
-  }, [])
+    router.refresh()
+  }, [router])
 
   const setFontSize = useCallback((next: FontSize) => {
     setFontSizeState(next)

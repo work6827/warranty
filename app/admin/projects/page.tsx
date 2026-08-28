@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { formatDate } from '@/lib/utils/date'
+import { getServerLocale, translate } from '@/lib/i18n/server'
 
 async function getProjects(search?: string) {
   const supabase = await createClient()
@@ -39,17 +40,19 @@ export default async function ProjectsPage({
 }) {
   const params = await searchParams
   const projects = await getProjects(params.search)
+  const locale = await getServerLocale()
+  const t = (key: Parameters<typeof translate>[1]) => translate(locale, key)
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Projects</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Manage all Halla+ projects</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">{t('admin.projects.title')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('admin.projects.subtitle')}</p>
         </div>
         <Link href="/admin/projects/new" className={buttonVariants({ size: 'lg', className: 'h-10 gap-1.5' })}>
           <Plus className="size-4" />
-          New Project
+          {t('admin.dashboard.newProject')}
         </Link>
       </div>
 
@@ -57,7 +60,7 @@ export default async function ProjectsPage({
         <form action="/admin/projects" method="get">
           <Input
             name="search"
-            placeholder="Search by project ID or name…"
+            placeholder={t('admin.projects.search')}
             defaultValue={params.search}
             className="h-10 max-w-md"
           />
@@ -69,10 +72,10 @@ export default async function ProjectsPage({
           <CardContent className="flex flex-col items-center gap-3 py-16 text-center">
             <FolderSearch className="size-8 text-muted-foreground/50" />
             <p className="text-muted-foreground">
-              {params.search ? 'No projects found' : 'No projects yet'}
+              {params.search ? t('admin.projects.notFound') : t('admin.projects.empty')}
             </p>
             <Link href="/admin/projects/new" className={buttonVariants()}>
-              Create Your First Project
+              {t('admin.dashboard.createFirst')}
             </Link>
           </CardContent>
         </Card>
@@ -97,7 +100,7 @@ export default async function ProjectsPage({
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">
                     {project.project_type.charAt(0).toUpperCase() + project.project_type.slice(1)} •{' '}
-                    {formatDate(project.installation_date || project.created_at)}
+                    {formatDate(project.installation_date || project.created_at, 'dd MMMM yyyy', locale)}
                   </p>
                 </div>
               </div>

@@ -7,7 +7,7 @@ import { formatDate, getDaysRemaining } from '@/lib/utils/date'
 import { useLocale } from '@/lib/i18n/locale-context'
 
 export function PassportWarranty({ items }: { items: any[] }) {
-  const { t } = useLocale()
+  const { locale, t } = useLocale()
 
   return (
     <Card>
@@ -45,7 +45,7 @@ export function PassportWarranty({ items }: { items: any[] }) {
                 <div className="flex justify-between text-muted-foreground">
                   <span>{t('passport.warranty.validUntil')}</span>
                   <span className="font-medium text-foreground">
-                    {formatDate(warranty.expiration_date)}
+                    {formatDate(warranty.expiration_date, 'dd MMMM yyyy', locale)}
                   </span>
                 </div>
                 {!isExpired && (

@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
+import { useLocale } from '@/lib/i18n/locale-context'
 
 interface Category {
   id: string
@@ -37,6 +38,8 @@ export function AddProductDialog({
   areaName: string
   onClose: () => void
 }) {
+  const { locale } = useLocale()
+  const c = (en: string, id: string) => locale === 'id' ? id : en
   const supabase = createClient()
   const { addItem } = useProjectFormStore()
 
@@ -78,19 +81,19 @@ export function AddProductDialog({
 
   const handleAddProduct = async () => {
     if (!selectedProduct) {
-      alert('Please select a product')
+      alert(c('Please select a product', 'Pilih produk terlebih dahulu'))
       return
     }
 
     if (!quantity || parseFloat(quantity) <= 0) {
-      alert('Please enter a valid quantity')
+      alert(c('Please enter a valid quantity', 'Masukkan jumlah yang valid'))
       return
     }
 
     const finalUnit = unit === 'custom' ? customUnit : unit
 
     if (!finalUnit) {
-      alert('Please select or enter a unit')
+      alert(c('Please select or enter a unit', 'Pilih atau masukkan satuan'))
       return
     }
 
@@ -115,13 +118,13 @@ export function AddProductDialog({
     <Dialog open onOpenChange={onClose}>
       <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Add Product to {areaName}</DialogTitle>
+          <DialogTitle>{c('Add Product to', 'Tambah Produk ke')} {areaName}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Category Selection */}
           <div className="space-y-2">
-            <Label>Product Category</Label>
+            <Label>{c('Product Category', 'Kategori Produk')}</Label>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               {categories.map((category) => (
                 <button
@@ -144,21 +147,21 @@ export function AddProductDialog({
           {selectedCategory && (
             <div className="space-y-4">
               <div className="space-y-1.5">
-                <Label>Search Products</Label>
+                <Label>{c('Search Products', 'Cari Produk')}</Label>
                 <Input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search by brand or product name..."
+                  placeholder={c('Search by brand or product name...', 'Cari berdasarkan merek atau nama produk...')}
                   className="h-10"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label>Select Product</Label>
+                <Label>{c('Select Product', 'Pilih Produk')}</Label>
                 <div className="max-h-64 space-y-2 overflow-y-auto">
                   {products.length === 0 ? (
                     <div className="py-8 text-center text-muted-foreground">
-                      No products found. Create products first in the Products page.
+                      {c('No products found. Create products first on the Products page.', 'Produk tidak ditemukan. Buat produk terlebih dahulu di halaman Produk.')}
                     </div>
                   ) : (
                     products.map((product) => (
@@ -192,8 +195,8 @@ export function AddProductDialog({
                 <div className="space-y-1.5">
                   <Label htmlFor="quantity">
                     {categories.find((category) => category.id === selectedProduct.category_id)?.slug === 'flooring'
-                      ? 'Total Installation Area'
-                      : 'Quantity'}{' '}
+                      ? c('Total Installation Area', 'Total Luas Pemasangan')
+                      : c('Quantity', 'Jumlah')}{' '}
                     <span className="text-destructive">*</span>
                   </Label>
                   <Input
@@ -206,17 +209,17 @@ export function AddProductDialog({
                     className="h-10"
                   />
                   {categories.find((category) => category.id === selectedProduct.category_id)?.slug === 'flooring' && (
-                    <p className="text-xs text-muted-foreground">Total flooring area installed in this room.</p>
+                    <p className="text-xs text-muted-foreground">{c('Total flooring area installed in this room.', 'Total luas lantai yang dipasang di ruangan ini.')}</p>
                   )}
                 </div>
 
                 <div className="space-y-1.5">
                   <Label htmlFor="unit">
-                    Unit <span className="text-destructive">*</span>
+                    {c('Unit', 'Satuan')} <span className="text-destructive">*</span>
                   </Label>
                   <Select value={unit} onValueChange={(value) => setUnit(value ?? '')}>
                     <SelectTrigger id="unit" className="h-10 w-full">
-                      <SelectValue>{(value: string) => (value === 'custom' ? 'Custom...' : value)}</SelectValue>
+                      <SelectValue>{(value: string) => (value === 'custom' ? c('Custom...', 'Lainnya...') : value)}</SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {units.map((u) => (
@@ -224,7 +227,7 @@ export function AddProductDialog({
                           {u}
                         </SelectItem>
                       ))}
-                      <SelectItem value="custom">Custom...</SelectItem>
+                      <SelectItem value="custom">{c('Custom...', 'Lainnya...')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -232,12 +235,12 @@ export function AddProductDialog({
 
               {unit === 'custom' && (
                 <div className="space-y-1.5">
-                  <Label htmlFor="custom-unit">Custom Unit</Label>
+                  <Label htmlFor="custom-unit">{c('Custom Unit', 'Satuan Lainnya')}</Label>
                   <Input
                     id="custom-unit"
                     value={customUnit}
                     onChange={(e) => setCustomUnit(e.target.value)}
-                    placeholder="Enter custom unit"
+                    placeholder={c('Enter custom unit', 'Masukkan satuan')}
                     className="h-10"
                   />
                 </div>
@@ -248,10 +251,10 @@ export function AddProductDialog({
           {/* Action Buttons */}
           <div className="flex justify-end gap-3 pt-2">
             <Button variant="outline" onClick={onClose} className="h-10">
-              Cancel
+              {c('Cancel', 'Batal')}
             </Button>
             <Button onClick={handleAddProduct} disabled={!selectedProduct} className="h-10">
-              Add Product
+              {c('Add Product', 'Tambah Produk')}
             </Button>
           </div>
         </div>

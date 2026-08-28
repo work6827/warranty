@@ -1,13 +1,14 @@
 import { format, addMonths, differenceInDays, isPast } from 'date-fns'
-import { id as localeId } from 'date-fns/locale'
+import { enUS, id as localeId } from 'date-fns/locale'
+import type { Locale } from '@/lib/i18n/dictionary'
 
 /**
  * Format date for display
  */
-export function formatDate(date: string | Date | null | undefined, formatStr: string = 'dd MMMM yyyy'): string {
+export function formatDate(date: string | Date | null | undefined, formatStr: string = 'dd MMMM yyyy', locale: Locale = 'id'): string {
   if (!date) return '-'
   const dateObj = typeof date === 'string' ? new Date(date) : date
-  return format(dateObj, formatStr, { locale: localeId })
+  return format(dateObj, formatStr, { locale: locale === 'id' ? localeId : enUS })
 }
 
 /**

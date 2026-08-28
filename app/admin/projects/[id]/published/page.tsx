@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { QRCodeDisplay } from '@/components/admin/qr-code-display'
 import { CopyLinkButton } from '@/components/admin/copy-link-button'
 import { getRequestOrigin } from '@/lib/utils/request-url'
+import { getServerLocale } from '@/lib/i18n/server'
 
 async function getProject(id: string) {
   const supabase = await createClient()
@@ -33,6 +34,8 @@ export default async function PublishedPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
+  const locale = await getServerLocale()
+  const c = (en: string, idText: string) => locale === 'id' ? idText : en
   const project = await getProject(id)
 
   if (!project) {
@@ -48,10 +51,10 @@ export default async function PublishedPage({
           <CheckCircle2 className="size-7 text-brand" />
         </div>
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          Halla+ Digital Passport Ready
+          {c('Halla+ Digital Passport Ready', 'Paspor Digital Halla+ Siap')}
         </h1>
         <p className="mt-1 text-muted-foreground">
-          {project.project_id} has been successfully published
+          {project.project_id} {c('has been successfully published', 'berhasil diterbitkan')}
         </p>
       </div>
 
@@ -63,15 +66,15 @@ export default async function PublishedPage({
 
           <div className="space-y-1 text-sm">
             <div className="flex justify-between border-b border-border py-2.5">
-              <span className="text-muted-foreground">Customer</span>
+              <span className="text-muted-foreground">{c('Customer', 'Pelanggan')}</span>
               <span className="font-medium text-foreground">{project.customer?.name}</span>
             </div>
             <div className="flex justify-between border-b border-border py-2.5">
-              <span className="text-muted-foreground">Project</span>
+              <span className="text-muted-foreground">{c('Project', 'Proyek')}</span>
               <span className="font-medium text-foreground">{project.name}</span>
             </div>
             <div className="flex justify-between py-2.5">
-              <span className="text-muted-foreground">Project ID</span>
+              <span className="text-muted-foreground">{c('Project ID', 'ID Proyek')}</span>
               <span className="font-medium text-foreground">{project.project_id}</span>
             </div>
           </div>
@@ -87,7 +90,7 @@ export default async function PublishedPage({
           rel="noopener noreferrer"
           className={buttonVariants({ size: 'lg', className: 'h-11 w-full' })}
         >
-          Share with Customer via WhatsApp
+          {c('Share with Customer via WhatsApp', 'Bagikan ke Pelanggan via WhatsApp')}
         </a>
 
         <div className="grid grid-cols-2 gap-3">
@@ -97,13 +100,13 @@ export default async function PublishedPage({
             rel="noopener noreferrer"
             className={buttonVariants({ variant: 'outline', className: 'h-10' })}
           >
-            Open Passport
+            {c('Open Passport', 'Buka Paspor')}
           </a>
           <CopyLinkButton url={passportUrl} />
         </div>
 
         <Link href="/admin/projects" className={buttonVariants({ variant: 'outline', className: 'h-10 w-full' })}>
-          Return to Dashboard
+          {c('Return to Dashboard', 'Kembali ke Dasbor')}
         </Link>
       </div>
     </div>

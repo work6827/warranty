@@ -43,6 +43,8 @@
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
   --color-brand-soft: var(--brand-soft);
+  --color-signal: var(--signal);
+  --color-signal-soft: var(--signal-soft);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -53,30 +55,32 @@
 }
 
 :root {
-  --background: #f6f6f4;
-  --foreground: #171817;
+  --background: #f3f5f2;
+  --foreground: #101512;
   --card: #ffffff;
-  --card-foreground: #171817;
+  --card-foreground: #101512;
   --popover: #ffffff;
-  --popover-foreground: #171817;
-  --primary: #171817;
+  --popover-foreground: #101512;
+  --primary: #101512;
   --primary-foreground: #ffffff;
-  --secondary: #efefec;
-  --secondary-foreground: #262725;
-  --muted: #efefec;
-  --muted-foreground: #71716b;
-  --accent: #efefec;
-  --accent-foreground: #171817;
+  --secondary: #e9ede8;
+  --secondary-foreground: #1d251f;
+  --muted: #e9ede8;
+  --muted-foreground: #626a63;
+  --accent: #e9ede8;
+  --accent-foreground: #101512;
   --destructive: #c4432b;
-  --border: #e3e3de;
-  --input: #dcdcd6;
-  --ring: #876528;
+  --border: #d9ded8;
+  --input: #d2d8d1;
+  --ring: #075c32;
   --radius: 0.8rem;
 
-  /* Champagne is the restrained default: warm metal rather than bright orange. */
-  --brand: #876528;
-  --brand-foreground: #fffdf8;
-  --brand-soft: #f3ebda;
+  /* Halla signature: architectural green with orange reserved for signals. */
+  --brand: #075c32;
+  --brand-foreground: #ffffff;
+  --brand-soft: #deeee5;
+  --signal: #dc7811;
+  --signal-soft: #fff0dd;
 }
 
 html[data-color-theme='forest'] {

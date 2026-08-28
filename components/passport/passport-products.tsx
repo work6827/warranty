@@ -8,7 +8,7 @@ import { formatDate } from '@/lib/utils/date'
 import { useLocale } from '@/lib/i18n/locale-context'
 
 export function PassportProducts({ areas }: { areas: any[] }) {
-  const { t } = useLocale()
+  const { locale, t } = useLocale()
 
   if (areas.length === 0) return null
 
@@ -77,7 +77,7 @@ export function PassportProducts({ areas }: { areas: any[] }) {
                       </span>
                       {item.installation_date && (
                         <span>
-                          {t('passport.products.quantity')} {formatDate(item.installation_date)}
+                          {t('passport.products.quantity')} {formatDate(item.installation_date, 'dd MMMM yyyy', locale)}
                         </span>
                       )}
                       {item.installer && (
@@ -95,7 +95,7 @@ export function PassportProducts({ areas }: { areas: any[] }) {
                           className="text-xs"
                         >
                           {item.warranty.status === 'active' && '✓ '}
-                          {t('passport.products.warrantyUntil')} {formatDate(item.warranty.expiration_date)}
+                          {t('passport.products.warrantyUntil')} {formatDate(item.warranty.expiration_date, 'dd MMMM yyyy', locale)}
                         </Badge>
                       </div>
                     )}

@@ -10,8 +10,11 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Alert } from '@/components/ui/alert'
+import { useLocale } from '@/lib/i18n/locale-context'
 
 export function InstallationStep() {
+  const { locale } = useLocale()
+  const c = (en: string, id: string) => locale === 'id' ? id : en
   const supabase = createClient()
   const { areas, photos, addPhoto, removePhoto, updatePhoto, updateItem, setStep } = useProjectFormStore()
 
@@ -33,13 +36,13 @@ export function InstallationStep() {
 
       // Validate file type
       if (!file.type.startsWith('image/')) {
-        alert('Please select only image files')
+        alert(c('Please select only image files', 'Pilih file gambar saja'))
         continue
       }
 
       // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert(`File ${file.name} is too large. Max size is 5MB`)
+        alert(c(`File ${file.name} is too large. Max size is 5MB`, `File ${file.name} terlalu besar. Ukuran maksimal 5 MB`))
         continue
       }
 
@@ -79,15 +82,15 @@ export function InstallationStep() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Step 5: Installation Documentation</CardTitle>
-        <p className="text-sm text-muted-foreground">Upload photos and add installation details</p>
+        <CardTitle className="text-base">{c('Step 5: Installation Documentation', 'Langkah 5: Dokumentasi Pemasangan')}</CardTitle>
+        <p className="text-sm text-muted-foreground">{c('Upload photos and add installation details', 'Unggah foto dan tambahkan detail pemasangan')}</p>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Installation Details per Product */}
         <div className="space-y-4">
-          <h3 className="font-medium text-foreground">Installation Details</h3>
+          <h3 className="font-medium text-foreground">{c('Installation Details', 'Detail Pemasangan')}</h3>
           {allItems.length === 0 ? (
-            <Alert>No products added yet. Please add products first.</Alert>
+            <Alert>{c('No products added yet. Please add products first.', 'Belum ada produk. Tambahkan produk terlebih dahulu.')}</Alert>
           ) : (
             <div className="space-y-3">
               {allItems.map((item) => (
@@ -101,7 +104,7 @@ export function InstallationStep() {
 
                   <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                     <div className="space-y-1.5">
-                      <Label>Installation Date</Label>
+                      <Label>{c('Installation Date', 'Tanggal Pemasangan')}</Label>
                       <Input
                         type="date"
                         value={item.installation_date || ''}
@@ -111,22 +114,22 @@ export function InstallationStep() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <Label>Installation Technician</Label>
+                      <Label>{c('Installation Technician', 'Teknisi Pemasangan')}</Label>
                       <Select
                         value={item.installer_id || 'none'}
                         onValueChange={(value) => handleUpdateInstaller(item.id, value ?? 'none')}
                       >
                         <SelectTrigger className="h-10 w-full">
-                          <SelectValue placeholder="Select technician">
+                          <SelectValue placeholder={c('Select technician', 'Pilih teknisi')}>
                             {(value: string) =>
                               value === 'none'
-                                ? 'No technician assigned'
+                                ? c('No technician assigned', 'Belum ada teknisi')
                                 : installers.find((i) => i.id === value)?.name
                             }
                           </SelectValue>
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="none">No technician assigned</SelectItem>
+                          <SelectItem value="none">{c('No technician assigned', 'Belum ada teknisi')}</SelectItem>
                           {installers.map((installer) => (
                             <SelectItem key={installer.id} value={installer.id}>
                               {installer.name}
@@ -145,14 +148,14 @@ export function InstallationStep() {
         {/* Photo Upload */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="font-medium text-foreground">Installation Photos</h3>
+            <h3 className="font-medium text-foreground">{c('Installation Photos', 'Foto Pemasangan')}</h3>
             <Button
               variant="outline"
               onClick={() => document.getElementById('photo-upload')?.click()}
               className="h-9 gap-1.5"
             >
               <Upload className="size-4" />
-              Upload Photos
+              {c('Upload Photos', 'Unggah Foto')}
             </Button>
             <input
               id="photo-upload"
@@ -166,9 +169,9 @@ export function InstallationStep() {
 
           {photos.length === 0 ? (
             <div className="rounded-lg border-2 border-dashed border-border py-12 text-center">
-              <p className="mb-4 text-muted-foreground">No photos uploaded yet</p>
+              <p className="mb-4 text-muted-foreground">{c('No photos uploaded yet', 'Belum ada foto yang diunggah')}</p>
               <Button variant="outline" onClick={() => document.getElementById('photo-upload')?.click()}>
-                Upload Your First Photo
+                {c('Upload Your First Photo', 'Unggah Foto Pertama')}
               </Button>
             </div>
           ) : (
@@ -184,17 +187,17 @@ export function InstallationStep() {
                       }
                     >
                       <SelectTrigger className="h-8 text-xs">
-                        <SelectValue placeholder="Photo type">
+                        <SelectValue placeholder={c('Photo type', 'Jenis foto')}>
                           {(value: string) =>
-                            ({ none: 'No type', before: 'Before', during: 'During', after: 'After' })[value]
+                            ({ none: c('No type', 'Tanpa jenis'), before: c('Before', 'Sebelum'), during: c('During', 'Saat pemasangan'), after: c('After', 'Sesudah') })[value]
                           }
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">No type</SelectItem>
-                        <SelectItem value="before">Before</SelectItem>
-                        <SelectItem value="during">During</SelectItem>
-                        <SelectItem value="after">After</SelectItem>
+                        <SelectItem value="none">{c('No type', 'Tanpa jenis')}</SelectItem>
+                        <SelectItem value="before">{c('Before', 'Sebelum')}</SelectItem>
+                        <SelectItem value="during">{c('During', 'Saat pemasangan')}</SelectItem>
+                        <SelectItem value="after">{c('After', 'Sesudah')}</SelectItem>
                       </SelectContent>
                     </Select>
 
@@ -205,7 +208,7 @@ export function InstallationStep() {
                         onChange={(e) => updatePhoto(photo.id, { is_customer_visible: e.target.checked })}
                         className="rounded"
                       />
-                      Show to customer
+                      {c('Show to customer', 'Tampilkan kepada pelanggan')}
                     </label>
 
                     <Button
@@ -214,7 +217,7 @@ export function InstallationStep() {
                       onClick={() => removePhoto(photo.id)}
                       className="w-full text-destructive hover:bg-destructive/10 hover:text-destructive"
                     >
-                      Remove
+                      {c('Remove', 'Hapus')}
                     </Button>
                   </div>
                 </div>
@@ -223,17 +226,16 @@ export function InstallationStep() {
           )}
 
           <p className="text-xs text-muted-foreground">
-            Photos marked as &quot;Show to customer&quot; will appear on the public passport. Max file size:
-            5MB per photo.
+            {c('Photos marked as “Show to customer” will appear on the public passport. Maximum file size: 5 MB per photo.', 'Foto yang ditandai “Tampilkan kepada pelanggan” akan muncul di paspor publik. Ukuran maksimal: 5 MB per foto.')}
           </p>
         </div>
 
         <div className="flex justify-between pt-2">
           <Button variant="outline" onClick={handleBack} className="h-10">
-            Back
+            {c('Back', 'Kembali')}
           </Button>
           <Button onClick={handleContinue} size="lg" className="h-10">
-            Continue to Warranty
+            {c('Continue to Warranty', 'Lanjut ke Garansi')}
           </Button>
         </div>
       </CardContent>

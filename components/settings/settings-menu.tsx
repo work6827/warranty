@@ -14,7 +14,7 @@ export function SettingsMenu({ className }: { className?: string }) {
   const { locale, setLocale, fontSize, setFontSize, colorTheme, setColorTheme, t } = useLocale()
 
   const themes: Array<{ id: ColorTheme; swatch: string }> = [
-    { id: 'champagne', swatch: '#876528' },
+    { id: 'signature', swatch: '#075c32' },
     { id: 'forest', swatch: '#476655' },
     { id: 'oxblood', swatch: '#7b3f43' },
     { id: 'slate', swatch: '#536675' },

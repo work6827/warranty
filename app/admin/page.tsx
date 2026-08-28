@@ -5,6 +5,7 @@ import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { formatDate } from '@/lib/utils/date'
+import { getServerLocale, translate } from '@/lib/i18n/server'
 
 async function getDashboardStats() {
   const supabase = await createClient()
@@ -43,31 +44,32 @@ async function getDashboardStats() {
   }
 }
 
-const STAT_CARDS = [
-  { key: 'totalProjects', label: 'Total Projects', icon: FolderKanban },
-  { key: 'draftProjects', label: 'Drafts', icon: FileEdit },
-  { key: 'publishedProjects', label: 'Published', icon: CheckCircle2 },
-] as const
-
 export default async function AdminDashboard() {
   const stats = await getDashboardStats()
+  const locale = await getServerLocale()
+  const t = (key: Parameters<typeof translate>[1]) => translate(locale, key)
+  const statCards = [
+    { key: 'totalProjects', label: t('admin.dashboard.totalProjects'), icon: FolderKanban },
+    { key: 'draftProjects', label: t('admin.dashboard.drafts'), icon: FileEdit },
+    { key: 'publishedProjects', label: t('admin.dashboard.published'), icon: CheckCircle2 },
+  ] as const
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
       <div className="mb-10 flex items-end justify-between">
         <div>
-          <p className="mb-2 text-xs font-semibold tracking-[0.16em] text-brand uppercase">Halla+ workspace</p>
-          <h1 className="text-3xl font-semibold tracking-[-0.035em] text-foreground sm:text-4xl">Dashboard</h1>
-          <p className="mt-2 text-sm text-muted-foreground">A clear view of your digital passport portfolio.</p>
+          <p className="mb-2 text-xs font-semibold tracking-[0.16em] text-signal uppercase">{t('admin.dashboard.eyebrow')}</p>
+          <h1 className="text-3xl font-semibold tracking-[-0.035em] text-foreground sm:text-4xl">{t('admin.dashboard.title')}</h1>
+          <p className="mt-2 text-sm text-muted-foreground">{t('admin.dashboard.subtitle')}</p>
         </div>
         <Link href="/admin/projects/new" className={buttonVariants({ size: 'lg' })}>
           <Plus className="size-4" />
-          New Project
+          {t('admin.dashboard.newProject')}
         </Link>
       </div>
 
       <div className="mb-8 grid overflow-hidden rounded-2xl bg-card shadow-[0_1px_2px_rgba(17,17,15,0.03),0_16px_40px_-28px_rgba(17,17,15,0.3)] ring-1 ring-black/4 md:grid-cols-3">
-        {STAT_CARDS.map(({ key, label, icon: Icon }) => (
+        {statCards.map(({ key, label, icon: Icon }) => (
           <div key={key} className="relative flex items-center justify-between border-b border-border/70 px-6 py-6 last:border-b-0 md:border-r md:border-b-0 md:last:border-r-0">
               <div>
                 <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">{label}</p>
@@ -85,17 +87,17 @@ export default async function AdminDashboard() {
       <Card className="gap-0 py-0">
         <div className="flex items-center justify-between border-b border-border/70 px-6 py-5">
           <div>
-            <h2 className="font-semibold tracking-tight text-foreground">Recent projects</h2>
-            <p className="mt-0.5 text-xs text-muted-foreground">Latest activity across your portfolio</p>
+            <h2 className="font-semibold tracking-tight text-foreground">{t('admin.dashboard.recent')}</h2>
+            <p className="mt-0.5 text-xs text-muted-foreground">{t('admin.dashboard.recentSubtitle')}</p>
           </div>
-          <Link href="/admin/projects" className="text-xs font-medium text-brand transition-opacity hover:opacity-70">View all</Link>
+          <Link href="/admin/projects" className="text-xs font-medium text-brand transition-opacity hover:opacity-70">{t('admin.dashboard.viewAll')}</Link>
         </div>
         <CardContent className="px-0">
           {stats.recentProjects.length === 0 ? (
             <div className="py-16 text-center">
-              <p className="mb-4 text-muted-foreground">No projects yet</p>
+              <p className="mb-4 text-muted-foreground">{t('admin.dashboard.empty')}</p>
               <Link href="/admin/projects/new" className={buttonVariants()}>
-                Create Your First Project
+                {t('admin.dashboard.createFirst')}
               </Link>
             </div>
           ) : (
@@ -114,7 +116,7 @@ export default async function AdminDashboard() {
                         </Badge>
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        {project.customer?.name} <span className="mx-1.5 text-border">/</span> {project.project_id} <span className="mx-1.5 text-border">/</span> {formatDate(project.installation_date || project.created_at)}
+                        {project.customer?.name} <span className="mx-1.5 text-border">/</span> {project.project_id} <span className="mx-1.5 text-border">/</span> {formatDate(project.installation_date || project.created_at, 'dd MMMM yyyy', locale)}
                       </p>
                     </div>
                     <ArrowUpRight className="ml-4 size-4 text-muted-foreground/50 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand" />

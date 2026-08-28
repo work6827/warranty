@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { useLocale } from '@/lib/i18n/locale-context'
 
 const commonAreas = [
   'Living Room',
@@ -25,6 +26,8 @@ const commonAreas = [
 ]
 
 export function AreasStep() {
+  const { locale } = useLocale()
+  const c = (en: string, id: string) => locale === 'id' ? id : en
   const { areas, addArea, removeArea, setStep } = useProjectFormStore()
   const [newAreaName, setNewAreaName] = useState('')
 
@@ -40,7 +43,7 @@ export function AreasStep() {
 
   const handleContinue = () => {
     if (areas.length === 0) {
-      alert('Please add at least one area')
+      alert(c('Please add at least one area', 'Tambahkan setidaknya satu area'))
       return
     }
     setStep('products')
@@ -53,15 +56,15 @@ export function AreasStep() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Step 3: Project Areas</CardTitle>
+        <CardTitle className="text-base">{c('Step 3: Project Areas', 'Langkah 3: Area Proyek')}</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Add areas or rooms where products will be installed
+          {c('Add areas or rooms where products will be installed', 'Tambahkan area atau ruangan tempat produk akan dipasang')}
         </p>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Quick add common areas */}
         <div className="space-y-2">
-          <Label>Quick Add Common Areas</Label>
+          <Label>{c('Quick Add Common Areas', 'Tambah Cepat Area Umum')}</Label>
           <div className="flex flex-wrap gap-2">
             {commonAreas.map((area) => (
               <Badge
@@ -70,7 +73,7 @@ export function AreasStep() {
                 className="cursor-pointer hover:bg-secondary"
                 onClick={() => handleQuickAdd(area)}
               >
-                + {area}
+                + {locale === 'id' ? ({'Living Room':'Ruang Tamu','Master Bedroom':'Kamar Tidur Utama','Bedroom 2':'Kamar Tidur 2','Bedroom 3':'Kamar Tidur 3','Kitchen':'Dapur','Dining Room':'Ruang Makan','Bathroom':'Kamar Mandi','Office':'Kantor','Lobby':'Lobi','Reception':'Resepsionis','Meeting Room':'Ruang Rapat','Windows':'Jendela','Facade':'Fasad'} as Record<string,string>)[area] : area}
               </Badge>
             ))}
           </div>
@@ -78,13 +81,13 @@ export function AreasStep() {
 
         {/* Add custom area */}
         <div className="space-y-1.5">
-          <Label htmlFor="new-area">Add Custom Area</Label>
+          <Label htmlFor="new-area">{c('Add Custom Area', 'Tambah Area Lain')}</Label>
           <div className="flex gap-2">
             <Input
               id="new-area"
               value={newAreaName}
               onChange={(e) => setNewAreaName(e.target.value)}
-              placeholder="Enter area name"
+              placeholder={c('Enter area name', 'Masukkan nama area')}
               className="h-10"
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
@@ -94,7 +97,7 @@ export function AreasStep() {
               }}
             />
             <Button onClick={handleAddArea} className="h-10">
-              Add
+              {c('Add', 'Tambah')}
             </Button>
           </div>
         </div>
@@ -102,7 +105,7 @@ export function AreasStep() {
         {/* Current areas */}
         {areas.length > 0 && (
           <div className="space-y-2">
-            <Label>Project Areas ({areas.length})</Label>
+            <Label>{c('Project Areas', 'Area Proyek')} ({areas.length})</Label>
             <div className="space-y-2">
               {areas.map((area) => (
                 <div
@@ -113,7 +116,7 @@ export function AreasStep() {
                     <div className="font-medium text-foreground">{area.name}</div>
                     {area.items.length > 0 && (
                       <Badge variant="secondary">
-                        {area.items.length} product{area.items.length !== 1 ? 's' : ''}
+                        {area.items.length} {c(area.items.length === 1 ? 'product' : 'products', 'produk')}
                       </Badge>
                     )}
                   </div>
@@ -123,7 +126,7 @@ export function AreasStep() {
                     onClick={() => removeArea(area.id)}
                     className="text-destructive hover:bg-destructive/10 hover:text-destructive"
                   >
-                    Remove
+                    {c('Remove', 'Hapus')}
                   </Button>
                 </div>
               ))}
@@ -133,10 +136,10 @@ export function AreasStep() {
 
         <div className="flex justify-between pt-2">
           <Button variant="outline" onClick={handleBack} className="h-10">
-            Back
+            {c('Back', 'Kembali')}
           </Button>
           <Button onClick={handleContinue} size="lg" className="h-10">
-            Continue to Products
+            {c('Continue to Products', 'Lanjut ke Produk')}
           </Button>
         </div>
       </CardContent>

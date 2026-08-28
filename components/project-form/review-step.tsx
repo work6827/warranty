@@ -11,6 +11,7 @@ import { Alert } from '@/components/ui/alert'
 import { Separator } from '@/components/ui/separator'
 import { generateShortToken } from '@/lib/utils/token'
 import { formatDate } from '@/lib/utils/date'
+import { useLocale } from '@/lib/i18n/locale-context'
 
 function SectionMarker({ children }: { children: React.ReactNode }) {
   return (
@@ -21,6 +22,8 @@ function SectionMarker({ children }: { children: React.ReactNode }) {
 }
 
 export function ReviewStep() {
+  const { locale } = useLocale()
+  const c = (en: string, id: string) => locale === 'id' ? id : en
   const router = useRouter()
   const supabase = createClient()
   const { customerData, projectData, areas, photos, setStep, reset } = useProjectFormStore()
@@ -53,13 +56,13 @@ export function ReviewStep() {
 
   const handlePublish = async () => {
     if (!customerData) {
-      setError('Customer information is missing')
+      setError(c('Customer information is missing', 'Informasi pelanggan belum lengkap'))
       return
     }
 
     setLoading(true)
     setError('')
-    setUploadProgress('Creating project...')
+    setUploadProgress(c('Creating project...', 'Membuat proyek...'))
 
     let createdProjectId: string | null = null
     const uploadedPaths: string[] = []
@@ -74,7 +77,7 @@ export function ReviewStep() {
       const publicToken = generateShortToken()
 
       // Create project
-      setUploadProgress('Saving project details...')
+      setUploadProgress(c('Saving project details...', 'Menyimpan detail proyek...'))
       const { data: project, error: projectError } = await supabase
         .from('projects')
         .insert({
@@ -96,7 +99,7 @@ export function ReviewStep() {
       createdProjectId = project.id
 
       // Create areas and items
-      setUploadProgress('Adding products...')
+      setUploadProgress(c('Adding products...', 'Menambahkan produk...'))
       for (const area of areas) {
         const { data: createdArea, error: areaError } = await supabase
           .from('project_areas')
@@ -151,10 +154,10 @@ export function ReviewStep() {
 
       // Upload and save photos
       if (photos.length > 0) {
-        setUploadProgress(`Uploading photos (0/${photos.length})...`)
+        setUploadProgress(c(`Uploading photos (0/${photos.length})...`, `Mengunggah foto (0/${photos.length})...`))
         for (let i = 0; i < photos.length; i++) {
           const photo = photos[i]
-          setUploadProgress(`Uploading photos (${i + 1}/${photos.length})...`)
+          setUploadProgress(c(`Uploading photos (${i + 1}/${photos.length})...`, `Mengunggah foto (${i + 1}/${photos.length})...`))
 
           const { path, url } = await uploadPhoto(photo, project.id)
           uploadedPaths.push(path)
@@ -172,7 +175,7 @@ export function ReviewStep() {
       }
 
       // Reset form and redirect
-      setUploadProgress('Complete!')
+      setUploadProgress(c('Complete!', 'Selesai!'))
       reset()
       router.push(`/admin/projects/${project.id}/published`)
     } catch (err: any) {
@@ -190,7 +193,7 @@ export function ReviewStep() {
           .eq('id', createdProjectId)
         if (projectCleanupError) console.error('Error cleaning up partial project:', projectCleanupError)
       }
-      setError(err.message || 'Failed to create project')
+      setError(err.message || c('Failed to create project', 'Gagal membuat proyek'))
     } finally {
       setLoading(false)
       setUploadProgress('')
@@ -200,15 +203,15 @@ export function ReviewStep() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Step 7: Review & Publish</CardTitle>
-        <p className="text-sm text-muted-foreground">Review your project before publishing</p>
+        <CardTitle className="text-base">{c('Step 7: Review & Publish', 'Langkah 7: Tinjau & Terbitkan')}</CardTitle>
+        <p className="text-sm text-muted-foreground">{c('Review your project before publishing', 'Periksa proyek sebelum diterbitkan')}</p>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Customer */}
         <div>
           <h3 className="mb-3 flex items-center gap-2 font-medium text-foreground">
             <SectionMarker>✓</SectionMarker>
-            Customer Information
+            {c('Customer Information', 'Informasi Pelanggan')}
           </h3>
           <div className="ml-8 rounded-lg bg-secondary p-4">
             <p className="font-medium text-foreground">{customerData?.name}</p>
@@ -223,16 +226,16 @@ export function ReviewStep() {
         <div>
           <h3 className="mb-3 flex items-center gap-2 font-medium text-foreground">
             <SectionMarker>✓</SectionMarker>
-            Project Details
+            {c('Project Details', 'Detail Proyek')}
           </h3>
           <div className="ml-8 space-y-1 rounded-lg bg-secondary p-4">
             <p className="font-medium text-foreground">{projectData.name}</p>
             <p className="text-sm text-muted-foreground">
-              Type: {projectData.project_type.charAt(0).toUpperCase() + projectData.project_type.slice(1)}
+              {c('Type', 'Jenis')}: {projectData.project_type.charAt(0).toUpperCase() + projectData.project_type.slice(1)}
             </p>
             {projectData.installation_date && (
               <p className="text-sm text-muted-foreground">
-                Installation: {formatDate(projectData.installation_date)}
+                {c('Installation', 'Pemasangan')}: {formatDate(projectData.installation_date, undefined, locale)}
               </p>
             )}
           </div>
@@ -244,7 +247,7 @@ export function ReviewStep() {
         <div>
           <h3 className="mb-3 flex items-center gap-2 font-medium text-foreground">
             <SectionMarker>{totalItems}</SectionMarker>
-            Products Across {areas.length} Area{areas.length !== 1 ? 's' : ''}
+            {c('Products Across', 'Produk di')} {areas.length} {c(areas.length === 1 ? 'Area' : 'Areas', 'Area')}
           </h3>
           <div className="ml-8 space-y-2">
             {areas.map((area) => (
@@ -252,7 +255,7 @@ export function ReviewStep() {
                 <div className="mb-2 flex items-center justify-between">
                   <p className="font-medium text-foreground">{area.name}</p>
                   <Badge variant="secondary">
-                    {area.items.length} product{area.items.length !== 1 ? 's' : ''}
+                    {area.items.length} {c(area.items.length === 1 ? 'product' : 'products', 'produk')}
                   </Badge>
                 </div>
                 <div className="space-y-1">
@@ -263,7 +266,7 @@ export function ReviewStep() {
                       </span>
                       {item.warranty?.is_enabled && (
                         <Badge variant="outline" className="text-xs">
-                          {item.warranty.duration_months}mo warranty
+                          {item.warranty.duration_months} {c('mo warranty', 'bln garansi')}
                         </Badge>
                       )}
                     </div>
@@ -280,15 +283,15 @@ export function ReviewStep() {
         <div>
           <h3 className="mb-3 flex items-center gap-2 font-medium text-foreground">
             <SectionMarker>{photos.length}</SectionMarker>
-            Installation Photos
+            {c('Installation Photos', 'Foto Pemasangan')}
           </h3>
           {photos.length > 0 ? (
             <div className="ml-8 text-sm text-muted-foreground">
-              <p>{photos.filter((p) => p.is_customer_visible).length} photos will be visible to customers</p>
-              <p>{photos.filter((p) => !p.is_customer_visible).length} internal photos</p>
+              <p>{photos.filter((p) => p.is_customer_visible).length} {c('photos will be visible to customers', 'foto akan terlihat oleh pelanggan')}</p>
+              <p>{photos.filter((p) => !p.is_customer_visible).length} {c('internal photos', 'foto internal')}</p>
             </div>
           ) : (
-            <p className="ml-8 text-sm text-muted-foreground">No photos uploaded</p>
+            <p className="ml-8 text-sm text-muted-foreground">{c('No photos uploaded', 'Belum ada foto yang diunggah')}</p>
           )}
         </div>
 
@@ -298,18 +301,18 @@ export function ReviewStep() {
         <div>
           <h3 className="mb-3 flex items-center gap-2 font-medium text-foreground">
             <SectionMarker>{itemsWithWarranty}</SectionMarker>
-            Warranty Coverage
+            {c('Warranty Coverage', 'Cakupan Garansi')}
           </h3>
           <div className="ml-8 rounded-lg bg-secondary p-4">
             <p className="text-sm text-muted-foreground">
-              {itemsWithWarranty} of {totalItems} products have warranty coverage
+              {itemsWithWarranty} {c('of', 'dari')} {totalItems} {c('products have warranty coverage', 'produk memiliki perlindungan garansi')}
             </p>
           </div>
         </div>
 
         {/* Validation warnings */}
         {totalItems === 0 && (
-          <Alert variant="destructive">No products added. Please add at least one product before publishing.</Alert>
+          <Alert variant="destructive">{c('No products added. Please add at least one product before publishing.', 'Belum ada produk. Tambahkan setidaknya satu produk sebelum menerbitkan.')}</Alert>
         )}
 
         {error && <Alert variant="destructive">{error}</Alert>}
@@ -318,10 +321,10 @@ export function ReviewStep() {
 
         <div className="flex justify-between pt-2">
           <Button variant="outline" onClick={handleBack} disabled={loading} className="h-10">
-            Back
+            {c('Back', 'Kembali')}
           </Button>
           <Button onClick={handlePublish} size="lg" disabled={loading || totalItems === 0} className="h-10">
-            {loading ? 'Publishing…' : 'Save & Generate QR'}
+            {loading ? c('Publishing…', 'Menerbitkan…') : c('Save & Generate QR', 'Simpan & Buat QR')}
           </Button>
         </div>
       </CardContent>

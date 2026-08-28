@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert } from '@/components/ui/alert'
+import { SettingsMenu } from '@/components/settings/settings-menu'
+import { useLocale } from '@/lib/i18n/locale-context'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -16,6 +18,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
+  const { t } = useLocale()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -46,21 +49,22 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-secondary/40 px-4">
       <div className="w-full max-w-sm">
-        <div className="mb-8 flex justify-center">
+        <div className="mb-8 flex items-center justify-between">
           <Link href="/">
             <Logo />
           </Link>
+          <SettingsMenu />
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-8 shadow-soft">
-          <h1 className="text-lg font-semibold text-foreground">Admin sign in</h1>
+          <h1 className="text-lg font-semibold text-foreground">{t('admin.login.title')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage customers, products, and projects.
+            {t('admin.login.subtitle')}
           </p>
 
           <form onSubmit={handleLogin} className="mt-6 space-y-5">
             <div className="space-y-1.5">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('admin.login.email')}</Label>
               <Input
                 id="email"
                 type="email"
@@ -75,7 +79,7 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('admin.login.password')}</Label>
               <Input
                 id="password"
                 type="password"
@@ -92,14 +96,14 @@ export default function LoginPage() {
             {error && <Alert variant="destructive">{error}</Alert>}
 
             <Button type="submit" className="h-10 w-full" disabled={loading}>
-              {loading ? 'Signing in…' : 'Sign In'}
+              {loading ? t('admin.login.submitting') : t('admin.login.submit')}
             </Button>
           </form>
         </div>
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
           <Link href="/" className="hover:text-foreground">
-            ← Back to Halla+
+            ← {t('admin.login.back')}
           </Link>
         </p>
       </div>

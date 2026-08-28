@@ -7,8 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AddProductDialog } from '@/components/product-form/add-product-dialog'
+import { useLocale } from '@/lib/i18n/locale-context'
 
 export function ProductsStep() {
+  const { locale } = useLocale()
+  const c = (en: string, id: string) => locale === 'id' ? id : en
   const { areas, removeItem, setStep } = useProjectFormStore()
   const [selectedAreaId, setSelectedAreaId] = useState<string>(areas[0]?.id || '')
   const [showAddDialog, setShowAddDialog] = useState(false)
@@ -19,7 +22,7 @@ export function ProductsStep() {
   const handleContinue = () => {
     const totalItems = areas.reduce((sum, area) => sum + area.items.length, 0)
     if (totalItems === 0) {
-      alert('Please add at least one product')
+      alert(c('Please add at least one product', 'Tambahkan setidaknya satu produk'))
       return
     }
     setStep('installation')
@@ -35,15 +38,15 @@ export function ProductsStep() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Step 4: Add Products</CardTitle>
+        <CardTitle className="text-base">{c('Step 4: Add Products', 'Langkah 4: Tambah Produk')}</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Add installed products to each area ({totalItems} total)
+          {c('Add installed products to each area', 'Tambahkan produk terpasang ke setiap area')} ({totalItems} {c('total', 'total')})
         </p>
       </CardHeader>
       <CardContent className="space-y-6">
         {areas.length === 0 ? (
           <div className="py-8 text-center text-muted-foreground">
-            No areas available. Please go back and add areas first.
+            {c('No areas available. Please go back and add areas first.', 'Belum ada area. Kembali dan tambahkan area terlebih dahulu.')}
           </div>
         ) : (
           <Tabs value={selectedArea} onValueChange={setSelectedAreaId}>
@@ -63,16 +66,16 @@ export function ProductsStep() {
             {areas.map((area) => (
               <TabsContent key={area.id} value={area.id} className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-medium text-foreground">Products in {area.name}</h3>
+                  <h3 className="font-medium text-foreground">{c('Products in', 'Produk di')} {area.name}</h3>
                   <Button onClick={() => setShowAddDialog(true)} className="h-9 gap-1">
-                    + Add Product
+                    + {c('Add Product', 'Tambah Produk')}
                   </Button>
                 </div>
 
                 {area.items.length === 0 ? (
                   <div className="rounded-lg border-2 border-dashed border-border py-12 text-center">
-                    <p className="mb-4 text-muted-foreground">No products added to this area yet</p>
-                    <Button onClick={() => setShowAddDialog(true)}>Add First Product</Button>
+                    <p className="mb-4 text-muted-foreground">{c('No products added to this area yet', 'Belum ada produk di area ini')}</p>
+                    <Button onClick={() => setShowAddDialog(true)}>{c('Add First Product', 'Tambah Produk Pertama')}</Button>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -81,7 +84,7 @@ export function ProductsStep() {
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <h4 className="font-medium text-foreground">
-                              {item.product?.name || 'Product'}
+                              {item.product?.name || c('Product', 'Produk')}
                             </h4>
                             <p className="text-sm text-muted-foreground">
                               {item.product?.brand} {item.product?.series && `• ${item.product.series}`}
@@ -101,7 +104,7 @@ export function ProductsStep() {
                             onClick={() => removeItem(item.id)}
                             className="text-destructive hover:bg-destructive/10 hover:text-destructive"
                           >
-                            Remove
+                            {c('Remove', 'Hapus')}
                           </Button>
                         </div>
                       </div>
@@ -115,10 +118,10 @@ export function ProductsStep() {
 
         <div className="flex justify-between pt-2">
           <Button variant="outline" onClick={handleBack} className="h-10">
-            Back
+            {c('Back', 'Kembali')}
           </Button>
           <Button onClick={handleContinue} size="lg" disabled={totalItems === 0} className="h-10">
-            Continue to Installation
+            {c('Continue to Installation', 'Lanjut ke Pemasangan')}
           </Button>
         </div>
 

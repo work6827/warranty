@@ -8,7 +8,7 @@ import { SettingsMenu } from '@/components/settings/settings-menu'
 import { useLocale } from '@/lib/i18n/locale-context'
 
 export function PassportHeader({ project }: { project: any }) {
-  const { t } = useLocale()
+  const { locale, t } = useLocale()
 
   return (
     <div className="relative overflow-hidden border-b border-border bg-card">
@@ -45,7 +45,7 @@ export function PassportHeader({ project }: { project: any }) {
               <>
                 <span className="hidden text-border sm:inline">•</span>
                 <span>
-                  {t('passport.installed')} {formatDate(project.installation_date)}
+                  {t('passport.installed')} {formatDate(project.installation_date, 'dd MMMM yyyy', locale)}
                 </span>
               </>
             )}

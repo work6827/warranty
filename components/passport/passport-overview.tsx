@@ -12,7 +12,7 @@ export function PassportOverview({ project, areas, photoCount }: { project: any;
     { icon: Grid2X2, value: areas.length, label: locale === 'id' ? 'Area dikerjakan' : 'Areas completed' },
     { icon: PackageCheck, value: items.length, label: locale === 'id' ? 'Produk terpasang' : 'Products installed' },
     { icon: ShieldCheck, value: warranties.length, label: locale === 'id' ? 'Garansi aktif' : 'Covered items' },
-    { icon: CalendarDays, value: project.installation_date ? formatDate(project.installation_date, 'dd MMM yyyy') : '—', label: locale === 'id' ? 'Tanggal pemasangan' : 'Installation date' },
+    { icon: CalendarDays, value: project.installation_date ? formatDate(project.installation_date, 'dd MMM yyyy', locale) : '—', label: locale === 'id' ? 'Tanggal pemasangan' : 'Installation date' },
   ]
 
   return <section id="overview" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
