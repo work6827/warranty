@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { ArrowLeft, Home, MapPin, ShieldCheck } from 'lucide-react'
 import { formatDate } from '@/lib/utils/date'
-import { Monogram } from '@/components/brand/logo'
+import { Logo } from '@/components/brand/logo'
 import { SettingsMenu } from '@/components/settings/settings-menu'
 import { useLocale } from '@/lib/i18n/locale-context'
 
@@ -23,7 +23,7 @@ export function PassportHeader({ project }: { project: any }) {
           <SettingsMenu />
         </div>
         <div className="flex flex-col items-center gap-4 text-center">
-          <Monogram size={44} />
+          <Logo tagline={false} />
 
           <div>
             <span className="inline-flex items-center gap-1 rounded-full bg-brand-soft px-2.5 py-1 text-xs font-medium text-brand">

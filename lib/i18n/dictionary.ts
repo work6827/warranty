@@ -17,6 +17,7 @@ export const dictionary = {
   'settings.fontSize.lg': { en: 'Large', id: 'Besar' },
 
   'nav.adminLogin': { en: 'Admin login', id: 'Masuk Admin' },
+  'nav.staffAccess': { en: 'Staff access', id: 'Akses staf' },
 
   'admin.nav.dashboard': { en: 'Dashboard', id: 'Dasbor' },
   'admin.nav.projects': { en: 'Projects', id: 'Proyek' },

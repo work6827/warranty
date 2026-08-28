@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { FileText, MessagesSquare, QrCode, ShieldCheck, Wrench } from 'lucide-react'
+import { FileText, LockKeyhole, MessagesSquare, QrCode, ShieldCheck, Wrench } from 'lucide-react'
 import { Logo } from '@/components/brand/logo'
 import { PassportLookupForm } from '@/components/home/passport-lookup-form'
 import { SettingsMenu } from '@/components/settings/settings-menu'
@@ -29,15 +29,7 @@ export function HomePageContent() {
       <header className="border-b border-border">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
           <Logo />
-          <div className="flex items-center gap-1">
-            <Link
-              href="/login"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {t('nav.adminLogin')}
-            </Link>
-            <SettingsMenu className="ml-2" />
-          </div>
+          <SettingsMenu />
         </div>
       </header>
 
@@ -125,7 +117,16 @@ export function HomePageContent() {
       <footer className="mx-auto max-w-6xl px-6 py-10">
         <div className="flex flex-col items-center justify-between gap-4 text-sm text-muted-foreground sm:flex-row">
           <Logo tagline={false} size="sm" />
-          <p>{t('home.footer.tagline')}</p>
+          <div className="flex flex-col items-center gap-3 sm:items-end">
+            <p>{t('home.footer.tagline')}</p>
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground/65 transition-colors hover:text-foreground"
+            >
+              <LockKeyhole className="size-3" />
+              {t('nav.staffAccess')}
+            </Link>
+          </div>
         </div>
       </footer>
     </div>

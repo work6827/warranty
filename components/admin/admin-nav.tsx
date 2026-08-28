@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Users, Package, HardHat, FolderKanban } from 'lucide-react'
+import { ChevronDown, CircleUserRound, LayoutDashboard, Users, Package, HardHat, FolderKanban } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Logo } from '@/components/brand/logo'
 import { SettingsMenu } from '@/components/settings/settings-menu'
@@ -38,10 +38,10 @@ export function AdminNav({ userEmail }: { userEmail?: string }) {
   }
 
   return (
-    <nav className="border-b border-border bg-card">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center gap-8">
+    <nav className="sticky top-0 z-40 border-b border-black/5 bg-background/88 backdrop-blur-xl">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-[68px] items-center justify-between gap-4">
+          <div className="flex min-w-0 items-center gap-5 lg:gap-7">
             <Link href="/" aria-label="Go to Halla+ homepage">
               <Logo size="sm" tagline={false} />
             </Link>
@@ -55,10 +55,10 @@ export function AdminNav({ userEmail }: { userEmail?: string }) {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                      'relative flex items-center gap-1.5 px-2.5 py-2 text-sm font-medium transition-colors after:absolute after:right-3 after:bottom-0 after:left-3 after:h-px after:origin-center after:scale-x-0 after:bg-brand after:transition-transform lg:px-3',
                       active
-                        ? 'bg-secondary text-foreground'
-                        : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                        ? 'text-foreground after:scale-x-100'
+                        : 'text-muted-foreground hover:text-foreground'
                     )}
                   >
                     <item.icon className="size-4" />
@@ -69,14 +69,21 @@ export function AdminNav({ userEmail }: { userEmail?: string }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="flex shrink-0 items-center gap-1">
             <SettingsMenu />
             <DropdownMenu>
-              <DropdownMenuTrigger className={buttonVariants({ variant: 'ghost', className: 'max-w-44 truncate text-sm' })}>
-                {userEmail || 'Admin'}
+              <DropdownMenuTrigger
+                aria-label="Open admin account menu"
+                className={buttonVariants({ variant: 'ghost', className: 'h-9 gap-2 rounded-full pr-2 pl-1.5' })}
+              >
+                <span className="flex size-6 items-center justify-center rounded-full bg-secondary text-muted-foreground">
+                  <CircleUserRound className="size-3.5" />
+                </span>
+                <span className="hidden text-sm lg:inline">Admin</span>
+                <ChevronDown className="size-3.5 text-muted-foreground" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem disabled className="text-xs text-muted-foreground">
+              <DropdownMenuContent align="end" className="w-64">
+                <DropdownMenuItem disabled className="block truncate px-2 py-2 text-xs text-muted-foreground">
                   {userEmail}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
