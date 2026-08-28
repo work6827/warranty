@@ -17,7 +17,7 @@ export function Logo({
     <div className={cn('inline-flex flex-col items-start', className)}>
       <div className={cn('relative overflow-hidden', size === 'sm' ? 'h-7 w-[106px]' : 'h-8 w-[124px]')}>
         <Image
-          src="/halla-plus-wordmark.png"
+          src="/halla-plus-wordmark-upright.png"
           alt="Halla+"
           width={2162}
           height={727}
