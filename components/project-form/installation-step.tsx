@@ -111,22 +111,22 @@ export function InstallationStep() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <Label>Installer</Label>
+                      <Label>Installation Technician</Label>
                       <Select
                         value={item.installer_id || 'none'}
                         onValueChange={(value) => handleUpdateInstaller(item.id, value ?? 'none')}
                       >
                         <SelectTrigger className="h-10 w-full">
-                          <SelectValue placeholder="Select installer">
+                          <SelectValue placeholder="Select technician">
                             {(value: string) =>
                               value === 'none'
-                                ? 'No installer'
+                                ? 'No technician assigned'
                                 : installers.find((i) => i.id === value)?.name
                             }
                           </SelectValue>
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="none">No installer</SelectItem>
+                          <SelectItem value="none">No technician assigned</SelectItem>
                           {installers.map((installer) => (
                             <SelectItem key={installer.id} value={installer.id}>
                               {installer.name}

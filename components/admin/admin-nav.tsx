@@ -20,7 +20,7 @@ const navItems = [
   { href: '/admin/projects', label: 'Projects', icon: FolderKanban },
   { href: '/admin/customers', label: 'Customers', icon: Users },
   { href: '/admin/products', label: 'Products', icon: Package },
-  { href: '/admin/installers', label: 'Installers', icon: HardHat },
+  { href: '/admin/installers', label: 'Technicians', icon: HardHat },
 ]
 
 export function AdminNav({ userEmail }: { userEmail?: string }) {

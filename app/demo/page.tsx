@@ -546,7 +546,7 @@ export default function DemoPassportPage() {
                 Need help with your project? Our team is ready to assist with warranty claims, maintenance advice, or service requests.
               </p>
 
-              {/* Installer Profile Card */}
+              {/* Technician Profile Card */}
               <div className="mb-8 p-6 rounded-2xl bg-gradient-to-br from-neutral-50 to-white border-2 border-neutral-200">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-purple-500/30">
@@ -554,7 +554,7 @@ export default function DemoPassportPage() {
                   </div>
                   <div>
                     <div className="font-semibold text-neutral-900 text-xl">John Doe</div>
-                    <div className="text-neutral-600">Lead Installer</div>
+                    <div className="text-neutral-600">Lead Installation Technician</div>
                   </div>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-3 text-sm">

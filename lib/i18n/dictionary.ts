@@ -1,5 +1,6 @@
 export type Locale = 'en' | 'id'
 export type FontSize = 'sm' | 'md' | 'lg'
+export type ColorTheme = 'champagne' | 'forest' | 'oxblood' | 'slate'
 
 // Flat key → { en, id } dictionary. Scoped to the customer-facing surfaces
 // (home page, passport, and the settings menu itself) — the admin console
@@ -7,6 +8,11 @@ export type FontSize = 'sm' | 'md' | 'lg'
 export const dictionary = {
   'settings.label': { en: 'Settings', id: 'Pengaturan' },
   'settings.language': { en: 'Language', id: 'Bahasa' },
+  'settings.theme': { en: 'Colour theme', id: 'Tema warna' },
+  'settings.theme.champagne': { en: 'Champagne', id: 'Champagne' },
+  'settings.theme.forest': { en: 'Forest', id: 'Forest' },
+  'settings.theme.oxblood': { en: 'Oxblood', id: 'Oxblood' },
+  'settings.theme.slate': { en: 'Slate', id: 'Slate' },
   'settings.fontSize': { en: 'Text size', id: 'Ukuran teks' },
   'settings.fontSize.sm': { en: 'Small', id: 'Kecil' },
   'settings.fontSize.md': { en: 'Default', id: 'Standar' },

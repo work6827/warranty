@@ -75,12 +75,31 @@
   --ring: #1c1a17;
   --radius: 0.65rem;
 
-  /* Brand accent — one confident, saturated color (Square/Apple pattern:
-     the whole system is black-and-white, this is the single deliberate
-     pop, reserved for primary actions, the mark, and key emphasis) */
-  --brand: #d8480f;
-  --brand-foreground: #fffaf6;
-  --brand-soft: #fde7d7;
+  /* Champagne is the restrained default: warm metal rather than bright orange. */
+  --brand: #876528;
+  --brand-foreground: #fffdf8;
+  --brand-soft: #f3ebda;
+}
+
+html[data-color-theme='forest'] {
+  --brand: #476655;
+  --brand-foreground: #fbfdfb;
+  --brand-soft: #e4ece6;
+  --ring: #476655;
+}
+
+html[data-color-theme='oxblood'] {
+  --brand: #7b3f43;
+  --brand-foreground: #fffafa;
+  --brand-soft: #f1e3e3;
+  --ring: #7b3f43;
+}
+
+html[data-color-theme='slate'] {
+  --brand: #536675;
+  --brand-foreground: #fbfcfd;
+  --brand-soft: #e5eaed;
+  --ring: #536675;
 }
 
 /* Root-level font scale for the accessibility font-size control (Settings

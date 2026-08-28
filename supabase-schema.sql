@@ -160,13 +160,11 @@ SELECT id, 'Thickness', 'thickness', 'number', 'mm', true, 2 FROM categories WHE
 UNION ALL
 SELECT id, 'Wear Layer', 'wear_layer', 'number', 'mm', true, 3 FROM categories WHERE slug = 'flooring'
 UNION ALL
-SELECT id, 'Dimensions', 'dimensions', 'text', NULL, true, 4 FROM categories WHERE slug = 'flooring'
+SELECT id, 'Plank Length', 'plank_length', 'number', 'mm', true, 4 FROM categories WHERE slug = 'flooring'
 UNION ALL
-SELECT id, 'Surface Finish', 'surface_finish', 'text', NULL, true, 5 FROM categories WHERE slug = 'flooring'
+SELECT id, 'Plank Width', 'plank_width', 'number', 'mm', true, 5 FROM categories WHERE slug = 'flooring'
 UNION ALL
-SELECT id, 'Pattern', 'pattern', 'text', NULL, true, 6 FROM categories WHERE slug = 'flooring'
-UNION ALL
-SELECT id, 'Collection', 'collection', 'text', NULL, true, 7 FROM categories WHERE slug = 'flooring';
+SELECT id, 'Pattern', 'pattern', 'text', NULL, true, 6 FROM categories WHERE slug = 'flooring';
 
 -- Insert Wall Panel specifications
 INSERT INTO category_specifications (category_id, name, slug, data_type, unit, is_visible_to_customer, sort_order)

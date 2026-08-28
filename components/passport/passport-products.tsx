@@ -54,6 +54,10 @@ export function PassportProducts({ areas }: { areas: any[] }) {
                         <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 border-t border-border pt-3 text-xs">
                           {Object.entries(item.product.specifications).map(([key, value]: [string, any]) => {
                             if (!value) return null
+                            if (
+                              item.product.category?.name === 'Flooring' &&
+                              ['dimensions', 'surface_finish', 'collection'].includes(key)
+                            ) return null
                             return (
                               <div key={key} className="flex justify-between gap-2">
                                 <span className="text-muted-foreground capitalize">

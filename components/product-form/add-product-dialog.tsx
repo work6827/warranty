@@ -70,6 +70,10 @@ export function AddProductDialog({
 
   const handleSelectProduct = (product: Product) => {
     setSelectedProduct(product)
+    const category = categories.find((item) => item.id === product.category_id)
+    if (category?.slug === 'flooring') {
+      setUnit('m²')
+    }
   }
 
   const handleAddProduct = async () => {
@@ -187,7 +191,10 @@ export function AddProductDialog({
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <Label htmlFor="quantity">
-                    Quantity <span className="text-destructive">*</span>
+                    {categories.find((category) => category.id === selectedProduct.category_id)?.slug === 'flooring'
+                      ? 'Total Installation Area'
+                      : 'Quantity'}{' '}
+                    <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="quantity"
@@ -198,6 +205,9 @@ export function AddProductDialog({
                     onChange={(e) => setQuantity(e.target.value)}
                     className="h-10"
                   />
+                  {categories.find((category) => category.id === selectedProduct.category_id)?.slug === 'flooring' && (
+                    <p className="text-xs text-muted-foreground">Total flooring area installed in this room.</p>
+                  )}
                 </div>
 
                 <div className="space-y-1.5">

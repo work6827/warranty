@@ -3,15 +3,22 @@
 import { Settings } from 'lucide-react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { useLocale } from '@/lib/i18n/locale-context'
+import type { ColorTheme } from '@/lib/i18n/dictionary'
 import { cn } from '@/lib/utils'
 
 /**
- * Small settings affordance for the customer-facing pages: language
- * (English / Bahasa Indonesia) and text size. Both persist to
- * localStorage via LocaleProvider so the choice sticks across visits.
+ * Small settings affordance for customer-facing pages: colour theme,
+ * language, and text size. Preferences persist in localStorage.
  */
 export function SettingsMenu({ className }: { className?: string }) {
-  const { locale, setLocale, fontSize, setFontSize, t } = useLocale()
+  const { locale, setLocale, fontSize, setFontSize, colorTheme, setColorTheme, t } = useLocale()
+
+  const themes: Array<{ id: ColorTheme; swatch: string }> = [
+    { id: 'champagne', swatch: '#876528' },
+    { id: 'forest', swatch: '#476655' },
+    { id: 'oxblood', swatch: '#7b3f43' },
+    { id: 'slate', swatch: '#536675' },
+  ]
 
   return (
     <Popover>
@@ -26,6 +33,31 @@ export function SettingsMenu({ className }: { className?: string }) {
       </PopoverTrigger>
       <PopoverContent>
         <div className="space-y-4">
+          <div>
+            <p className="mb-2 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              {t('settings.theme')}
+            </p>
+            <div className="grid grid-cols-2 gap-1.5">
+              {themes.map(({ id, swatch }) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setColorTheme(id)}
+                  aria-pressed={colorTheme === id}
+                  className={cn(
+                    'flex items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-xs font-medium transition-colors',
+                    colorTheme === id
+                      ? 'border-brand bg-brand-soft text-foreground'
+                      : 'border-border text-muted-foreground hover:text-foreground'
+                  )}
+                >
+                  <span className="size-3.5 rounded-full ring-1 ring-black/10" style={{ backgroundColor: swatch }} />
+                  {t(`settings.theme.${id}` as const)}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div>
             <p className="mb-2 text-xs font-medium tracking-wide text-muted-foreground uppercase">
               {t('settings.language')}
