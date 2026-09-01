@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { BookOpenCheck, ChevronDown, CircleUserRound, LayoutDashboard, Users, Package, HardHat, FolderKanban } from 'lucide-react'
+import { BookOpenCheck, ChevronDown, CircleUserRound, LayoutDashboard, Users, Package, HardHat, FolderKanban, UserRound } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Logo } from '@/components/brand/logo'
 import { SettingsMenu } from '@/components/settings/settings-menu'
@@ -87,6 +87,11 @@ export function AdminNav({ userEmail }: { userEmail?: string }) {
               <DropdownMenuContent align="end" className="w-64">
                 <DropdownMenuItem disabled className="block truncate px-2 py-2 text-xs text-muted-foreground">
                   {userEmail}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => router.push('/admin/profile')} className="py-2">
+                  <UserRound />
+                  {locale === 'id' ? 'Pengaturan profil' : 'Profile settings'}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut}>{t('admin.nav.signOut')}</DropdownMenuItem>
