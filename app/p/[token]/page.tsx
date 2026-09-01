@@ -13,53 +13,9 @@ import { PassportQR } from '@/components/passport/passport-qr'
 
 async function getPassportData(token: string) {
   const supabase = await createClient()
-
-  // Get project by public token
-  const { data: project, error: projectError } = await supabase
-    .from('projects')
-    .select(`
-      *,
-      customer:customers(name, phone)
-    `)
-    .eq('public_token', token)
-    .eq('status', 'published')
-    .single()
-
-  if (projectError || !project) {
-    return null
-  }
-
-  // Get areas with items
-  const { data: areas } = await supabase
-    .from('project_areas')
-    .select(`
-      *,
-      items:project_items(
-        *,
-        product:products(
-          *,
-          category:categories(name)
-        ),
-        warranty:warranties(*),
-        installer:installers(name)
-      )
-    `)
-    .eq('project_id', project.id)
-    .order('sort_order')
-
-  // Get customer-visible photos
-  const { data: photos } = await supabase
-    .from('project_photos')
-    .select('*')
-    .eq('project_id', project.id)
-    .eq('is_customer_visible', true)
-    .order('created_at')
-
-  return {
-    project,
-    areas: areas || [],
-    photos: photos || [],
-  }
+  const { data, error } = await supabase.rpc('get_public_passport', { p_token: token })
+  if (error || !data) return null
+  return data as { project: any; areas: any[]; photos: any[] }
 }
 
 export default async function PassportPage({

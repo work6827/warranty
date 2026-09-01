@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Alert } from '@/components/ui/alert'
 import { Separator } from '@/components/ui/separator'
-import { generateShortToken } from '@/lib/utils/token'
+import { generatePublicToken } from '@/lib/utils/token'
 import { formatDate } from '@/lib/utils/date'
 import { useLocale } from '@/lib/i18n/locale-context'
 
@@ -74,7 +74,7 @@ export function ReviewStep() {
       const projectId = projectIdData as string
 
       // Generate public token
-      const publicToken = generateShortToken()
+      const publicToken = generatePublicToken()
 
       // Create project
       setUploadProgress(c('Saving project details...', 'Menyimpan detail proyek...'))

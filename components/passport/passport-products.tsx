@@ -29,9 +29,9 @@ export function PassportProducts({ areas }: { areas: any[] }) {
 
               <div className="space-y-3">
                 {area.items.map((item: any) => (
-                  <details key={item.id} className="group rounded-2xl border border-border bg-card p-4 transition-all open:shadow-sm" open={areaIndex === 0}>
+                  <details key={item.id} className="group rounded-2xl border border-border bg-card p-3 transition-all open:shadow-sm sm:p-4" open={areaIndex === 0}>
                     <summary className="flex cursor-pointer list-none items-start justify-between gap-3 [&::-webkit-details-marker]:hidden">
-                      <div className="flex min-w-0 gap-3">
+                      <div className="flex min-w-0 flex-1 gap-3">
                         <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft"><Package className="size-4.5 text-brand" /></div>
                       <div className="flex-1">
                         <h4 className="font-medium text-foreground">{item.product.name}</h4>
@@ -40,7 +40,7 @@ export function PassportProducts({ areas }: { areas: any[] }) {
                           {item.product.series && ` • ${item.product.series}`}
                         </p>
                       </div>
-                      <Badge variant="outline" className="shrink-0">
+                      <Badge variant="outline" className="hidden shrink-0 sm:inline-flex">
                         {item.product.category.name}
                       </Badge>
                       </div>
@@ -51,7 +51,7 @@ export function PassportProducts({ areas }: { areas: any[] }) {
                     {/* Specifications */}
                     {item.product.specifications &&
                       Object.keys(item.product.specifications).length > 0 && (
-                        <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 border-t border-border pt-3 text-xs">
+                        <div className="mt-3 grid grid-cols-1 gap-x-4 gap-y-2 border-t border-border pt-3 text-xs sm:grid-cols-2 sm:gap-y-1.5">
                           {Object.entries(item.product.specifications).map(([key, value]: [string, any]) => {
                             if (!value) return null
                             if (

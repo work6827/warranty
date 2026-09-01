@@ -19,9 +19,16 @@ export default async function AdminLayout({
     redirect('/login')
   }
 
+  const { data: isAdmin, error: adminCheckError } = await supabase.rpc('is_admin_user')
+
+  if (adminCheckError || !isAdmin) {
+    await supabase.auth.signOut()
+    redirect('/login?error=unauthorized')
+  }
+
   return (
     <SupabaseBrowserProvider url={supabaseUrl} anonKey={supabaseAnonKey}>
-      <div className="min-h-screen bg-background">
+      <div className="admin-shell min-h-screen bg-background pb-16 sm:pb-0">
         <AdminNav userEmail={user.email} />
         <main>{children}</main>
       </div>

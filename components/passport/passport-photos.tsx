@@ -40,7 +40,7 @@ export function PassportPhotos({ photos }: { photos: Photo[] }) {
       <p className="mt-1 max-w-sm text-sm text-muted-foreground">{locale === 'id' ? 'Hubungi Halla+ jika Anda membutuhkan dokumentasi hasil pemasangan.' : 'Contact Halla+ if you need installation documentation added to this passport.'}</p>
     </div> : <div className="grid auto-rows-[150px] grid-cols-2 gap-2 p-2 sm:auto-rows-[190px] sm:grid-cols-3">
       {filtered.map((photo, index) => <button key={photo.id} onClick={() => setSelected(photo)} className={`group relative overflow-hidden rounded-2xl bg-secondary ${index === 0 ? 'col-span-2 row-span-2' : ''}`}>
-        <img src={photo.file_url} alt={photo.caption || 'Installation result'} className="size-full object-cover transition duration-500 group-hover:scale-105" />
+        <img src={photo.file_url} alt={photo.caption || 'Installation result'} className="size-full object-cover transition-transform duration-250 group-hover:scale-105" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent opacity-80" />
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-left text-white">
           <div><p className="text-[10px] font-semibold tracking-widest uppercase opacity-75">{photo.photo_type || (locale === 'id' ? 'Dokumentasi' : 'Detail')}</p>{photo.caption && <p className="mt-0.5 text-sm font-medium line-clamp-2">{photo.caption}</p>}</div>

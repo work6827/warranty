@@ -13,10 +13,6 @@ const lookupSchema = z.object({
   phone: z.string().trim().min(4, 'Enter the phone number on file').max(20),
 })
 
-function normalizePhone(value: string) {
-  return value.replace(/\D/g, '')
-}
-
 // Deliberately generic — never reveal whether the code or the phone number
 // was the part that didn't match, so the form can't be used to enumerate
 // valid passport codes.
@@ -44,35 +40,12 @@ export async function lookupPassport(
     return { error: 'Too many attempts. Please wait a few minutes and try again.' }
   }
 
-  const code = parsed.data.code.trim().toUpperCase()
-  const phoneDigits = normalizePhone(parsed.data.phone)
-
   const supabase = await createClient()
+  const { data: publicToken, error } = await supabase.rpc('lookup_public_passport', {
+    p_code: parsed.data.code,
+    p_phone: parsed.data.phone,
+  })
 
-  const { data: project } = await supabase
-    .from('projects')
-    .select('public_token, status, customer:customers(phone)')
-    .eq('project_id', code)
-    .eq('status', 'published')
-    .maybeSingle()
-
-  if (!project?.public_token) {
-    return NOT_FOUND
-  }
-
-  const customer = project.customer as unknown as { phone: string | null } | null
-  const customerPhone = normalizePhone(customer?.phone || '')
-
-  // Compare the last 6 digits so formatting differences (+62, leading 0,
-  // spaces/dashes) don't cause false negatives.
-  const matches =
-    phoneDigits.length >= 4 &&
-    customerPhone.length >= 4 &&
-    customerPhone.slice(-6) === phoneDigits.slice(-6)
-
-  if (!matches) {
-    return NOT_FOUND
-  }
-
-  redirect(`/p/${project.public_token}`)
+  if (error || !publicToken) return NOT_FOUND
+  redirect(`/p/${publicToken}`)
 }

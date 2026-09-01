@@ -102,13 +102,13 @@ export function TechnicianManager({ initialTechnicians, loadError }: { initialTe
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <div className="mb-8 flex items-start justify-between gap-4">
+    <div className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
+      <div className="mb-8 flex flex-col items-start gap-4 sm:flex-row sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">{t('admin.technicians.title')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">{t('admin.technicians.subtitle')}</p>
         </div>
-        <Button size="lg" className="h-10 gap-1.5" onClick={openCreate}><Plus className="size-4" />{t('admin.technicians.add')}</Button>
+        <Button size="lg" className="h-10 w-full gap-1.5 sm:w-auto" onClick={openCreate}><Plus className="size-4" />{t('admin.technicians.add')}</Button>
       </div>
 
       {error && !dialogOpen && <Alert variant="destructive" className="mb-5">{error}</Alert>}

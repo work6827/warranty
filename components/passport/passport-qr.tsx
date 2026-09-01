@@ -27,7 +27,7 @@ export function PassportQR({ projectId, passportUrl }: { projectId: string; pass
           <p className="mt-1 max-w-md text-sm leading-relaxed text-muted-foreground">{locale === 'id' ? 'Simpan QR pribadi ini untuk membuka garansi dan detail pemasangan Anda kapan saja.' : 'Save this personal QR to reopen your warranty and installation details anytime.'}</p>
         </div>
       </div>
-      <Button size="lg" onClick={() => setOpen(true)} disabled={!qrDataUrl || error} className="h-11 shrink-0 px-5"><QrCode className="size-4" />{locale === 'id' ? 'Tampilkan QR Saya' : 'Show My QR'}</Button>
+      <Button size="lg" onClick={() => setOpen(true)} disabled={!qrDataUrl || error} className="h-11 w-full shrink-0 px-5 sm:w-auto"><QrCode className="size-4" />{locale === 'id' ? 'Tampilkan QR Saya' : 'Show My QR'}</Button>
     </div>
 
     <Dialog open={open} onOpenChange={setOpen}>
@@ -36,8 +36,8 @@ export function PassportQR({ projectId, passportUrl }: { projectId: string; pass
           <DialogTitle className="text-xl">{locale === 'id' ? 'QR Halla+ Anda' : 'Your Halla+ QR'}</DialogTitle>
           <DialogDescription>{locale === 'id' ? 'QR ini khusus untuk paspor proyek Anda.' : 'This QR is unique to your project passport.'}</DialogDescription>
         </DialogHeader>
-        <div className="mx-auto rounded-3xl border border-border bg-white p-4 shadow-sm">
-          {qrDataUrl && <img src={qrDataUrl} alt={`QR code for passport ${projectId}`} className="size-64" />}
+        <div className="mx-auto max-w-full rounded-3xl border border-border bg-white p-3 shadow-sm sm:p-4">
+          {qrDataUrl && <img src={qrDataUrl} alt={`QR code for passport ${projectId}`} className="size-56 max-w-full sm:size-64" />}
         </div>
         <div className="text-center">
           <p className="font-mono text-sm font-semibold tracking-wide text-foreground">{projectId}</p>

@@ -24,6 +24,7 @@ export const dictionary = {
   'admin.nav.customers': { en: 'Customers', id: 'Pelanggan' },
   'admin.nav.products': { en: 'Products', id: 'Produk' },
   'admin.nav.technicians': { en: 'Technicians', id: 'Teknisi' },
+  'admin.nav.guide': { en: 'Staff guide', id: 'Panduan staf' },
   'admin.nav.signOut': { en: 'Sign out', id: 'Keluar' },
   'admin.dashboard.eyebrow': { en: 'Halla+ workspace', id: 'Ruang kerja Halla+' },
   'admin.dashboard.title': { en: 'Dashboard', id: 'Dasbor' },

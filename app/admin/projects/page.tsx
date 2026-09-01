@@ -39,18 +39,17 @@ export default async function ProjectsPage({
   searchParams: Promise<{ search?: string }>
 }) {
   const params = await searchParams
-  const projects = await getProjects(params.search)
-  const locale = await getServerLocale()
+  const [projects, locale] = await Promise.all([getProjects(params.search), getServerLocale()])
   const t = (key: Parameters<typeof translate>[1]) => translate(locale, key)
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
+      <div className="mb-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">{t('admin.projects.title')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">{t('admin.projects.subtitle')}</p>
         </div>
-        <Link href="/admin/projects/new" className={buttonVariants({ size: 'lg', className: 'h-10 gap-1.5' })}>
+        <Link href="/admin/projects/new" className={buttonVariants({ size: 'lg', className: 'h-10 w-full gap-1.5 sm:w-auto' })}>
           <Plus className="size-4" />
           {t('admin.dashboard.newProject')}
         </Link>
@@ -87,10 +86,10 @@ export default async function ProjectsPage({
               href={`/admin/projects/${project.id}`}
               className="block rounded-xl border border-border bg-card p-4 transition-colors hover:border-foreground/20 hover:bg-secondary/50"
             >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="mb-1 flex items-center gap-3">
-                    <h3 className="font-medium text-foreground">{project.name}</h3>
+              <div className="flex min-w-0 items-start justify-between">
+                <div className="min-w-0 flex-1">
+                  <div className="mb-1 flex flex-wrap items-center gap-2 sm:gap-3">
+                    <h3 className="min-w-0 break-words font-medium text-foreground">{project.name}</h3>
                     <Badge variant={project.status === 'published' ? 'default' : 'secondary'}>
                       {project.status}
                     </Badge>

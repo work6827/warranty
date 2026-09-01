@@ -63,10 +63,12 @@ export default async function ProductsPage({
   searchParams: Promise<{ category?: string; search?: string }>
 }) {
   const params = await searchParams
-  const categories = await getCategories()
-  const products = await getProducts(params.category, params.search)
+  const [categories, products, locale] = await Promise.all([
+    getCategories(),
+    getProducts(params.category, params.search),
+    getServerLocale(),
+  ])
   const activeCategory = params.category || 'all'
-  const locale = await getServerLocale()
   const t = (key: Parameters<typeof translate>[1]) => translate(locale, key)
 
   return (

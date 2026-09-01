@@ -27,7 +27,7 @@ export function HomePageContent() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
           <Logo />
           <SettingsMenu />
         </div>
@@ -35,12 +35,12 @@ export function HomePageContent() {
 
       {/* Hero */}
       <section className="border-b border-border bg-secondary/40">
-        <div className="mx-auto grid max-w-6xl gap-14 px-6 py-20 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:py-28">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-14 lg:py-28">
           <div>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-soft px-3 py-1 text-xs font-medium text-brand">
               ✓ {t('home.badge')}
             </span>
-            <h1 className="mt-5 text-4xl leading-[1.1] font-semibold tracking-tight text-foreground sm:text-5xl">
+            <h1 className="mt-5 text-3xl leading-[1.1] font-semibold tracking-tight text-foreground sm:text-5xl">
               {t('home.hero.title')}
             </h1>
             <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
@@ -58,7 +58,7 @@ export function HomePageContent() {
 
           <div
             id="lookup"
-            className="rounded-2xl border border-border bg-card p-6 shadow-soft sm:p-8"
+            className="rounded-2xl border border-border bg-card p-4 shadow-soft sm:p-8"
           >
             <h2 className="text-lg font-semibold text-foreground">{t('home.lookup.title')}</h2>
             <p className="mt-1 text-sm text-muted-foreground">{t('home.lookup.subtitle')}</p>
@@ -70,7 +70,7 @@ export function HomePageContent() {
       </section>
 
       {/* Features */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
+      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
         <div className="max-w-xl">
           <h2 className="text-sm font-semibold tracking-wide text-brand uppercase">
             {t('home.features.eyebrow')}
@@ -97,7 +97,7 @@ export function HomePageContent() {
 
       {/* How it works */}
       <section className="border-t border-border bg-secondary/40">
-        <div className="mx-auto max-w-6xl px-6 py-20">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
           <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             {t('home.steps.title')}
           </h2>
@@ -114,7 +114,7 @@ export function HomePageContent() {
       </section>
 
       {/* Footer */}
-      <footer className="mx-auto max-w-6xl px-6 py-10">
+      <footer className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="flex flex-col items-center justify-between gap-4 text-sm text-muted-foreground sm:flex-row">
           <Logo tagline={false} size="sm" />
           <div className="flex flex-col items-center gap-3 sm:items-end">

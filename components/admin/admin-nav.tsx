@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { ChevronDown, CircleUserRound, LayoutDashboard, Users, Package, HardHat, FolderKanban } from 'lucide-react'
+import { BookOpenCheck, ChevronDown, CircleUserRound, LayoutDashboard, Users, Package, HardHat, FolderKanban } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Logo } from '@/components/brand/logo'
 import { SettingsMenu } from '@/components/settings/settings-menu'
@@ -23,6 +23,7 @@ const navItems = [
   { href: '/admin/customers', labelKey: 'admin.nav.customers', icon: Users },
   { href: '/admin/products', labelKey: 'admin.nav.products', icon: Package },
   { href: '/admin/installers', labelKey: 'admin.nav.technicians', icon: HardHat },
+  { href: '/admin/guide', labelKey: 'admin.nav.guide', icon: BookOpenCheck },
 ] as const
 
 export function AdminNav({ userEmail }: { userEmail?: string }) {
@@ -38,6 +39,7 @@ export function AdminNav({ userEmail }: { userEmail?: string }) {
   }
 
   return (
+    <>
     <nav className="sticky top-0 z-40 border-b border-black/5 bg-background/88 backdrop-blur-xl">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-[68px] items-center justify-between gap-4">
@@ -94,5 +96,27 @@ export function AdminNav({ userEmail }: { userEmail?: string }) {
         </div>
       </div>
     </nav>
+    <nav aria-label={locale === 'id' ? 'Navigasi admin seluler' : 'Mobile admin navigation'} className="fixed inset-x-0 bottom-0 z-40 border-t border-black/5 bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl sm:hidden">
+      <div className="grid grid-cols-6">
+        {navItems.map((item) => {
+          const active = item.href === '/admin' ? pathname === item.href : pathname.startsWith(item.href)
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={active ? 'page' : undefined}
+              className={cn(
+                'flex min-w-0 flex-col items-center gap-1 px-0.5 py-2 text-[9px] font-medium transition-colors',
+                active ? 'text-brand' : 'text-muted-foreground'
+              )}
+            >
+              <item.icon className="size-[19px]" strokeWidth={1.8} />
+              <span className="max-w-full truncate">{t(item.labelKey)}</span>
+            </Link>
+          )
+        })}
+      </div>
+    </nav>
+    </>
   )
 }
