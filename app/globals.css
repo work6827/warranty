@@ -212,6 +212,11 @@ img {
   }
 }
 
+@keyframes hero-reveal {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Better focus states for accessibility */
 button:focus-visible,
 a:focus-visible {

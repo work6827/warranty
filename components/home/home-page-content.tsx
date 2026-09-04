@@ -6,6 +6,7 @@ import { Logo } from '@/components/brand/logo'
 import { PassportLookupForm } from '@/components/home/passport-lookup-form'
 import { SettingsMenu } from '@/components/settings/settings-menu'
 import { useLocale } from '@/lib/i18n/locale-context'
+import { HeroCarousel } from '@/components/home/hero-carousel'
 
 const FEATURES = [
   { icon: FileText, titleKey: 'home.features.records.title', bodyKey: 'home.features.records.body' },
@@ -26,39 +27,31 @@ export function HomePageContent() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border">
+      <header className="absolute inset-x-0 top-0 z-30 border-b border-white/15 text-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
-          <Logo />
-          <SettingsMenu />
+          <Logo className="brightness-0 invert" />
+          <div className="rounded-full bg-white/90 text-foreground shadow-sm backdrop-blur-md">
+            <SettingsMenu />
+          </div>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="border-b border-border bg-secondary/40">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-14 lg:py-28">
-          <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-soft px-3 py-1 text-xs font-medium text-brand">
-              ✓ {t('home.badge')}
-            </span>
-            <h1 className="mt-5 text-3xl leading-[1.1] font-semibold tracking-tight text-foreground sm:text-5xl">
-              {t('home.hero.title')}
-            </h1>
-            <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
-              {t('home.hero.subtitle')}
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
-              <span className="inline-flex items-center gap-2">
-                <QrCode className="size-4 text-brand" />
-                {t('home.hero.scanHint')}
-              </span>
-              <span className="hidden text-border sm:inline">•</span>
-              <span>{t('home.hero.orLookup')}</span>
+      <HeroCarousel />
+
+      <section className="relative border-b border-border bg-secondary/40">
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[.8fr_1.2fr] lg:items-center lg:gap-16">
+          <div className="max-w-md">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-soft px-3 py-1 text-xs font-medium text-brand">✓ {t('home.badge')}</span>
+            <h2 className="mt-5 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{t('home.hero.title')}</h2>
+            <div className="mt-6 flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+              <QrCode className="mt-0.5 size-5 shrink-0 text-brand" />
+              <p>{t('home.hero.scanHint')}. {t('home.hero.orLookup')}.</p>
             </div>
           </div>
-
           <div
             id="lookup"
-            className="rounded-2xl border border-border bg-card p-4 shadow-soft sm:p-8"
+            className="scroll-mt-6 rounded-3xl border border-border bg-card p-5 shadow-soft sm:p-8"
           >
             <h2 className="text-lg font-semibold text-foreground">{t('home.lookup.title')}</h2>
             <p className="mt-1 text-sm text-muted-foreground">{t('home.lookup.subtitle')}</p>
